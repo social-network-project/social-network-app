@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import LoginForm from "../LoginForm";
 import NavBar from "./NavBar";
 //import InterestDashboard from "../interests/dashboard/InterestDashboard";
@@ -8,7 +8,8 @@ import NavBar from "./NavBar";
 function App() {
   return (
     <>
-      <Route path="/" component={LoginForm} />
+    <Routes>
+      <Route path="/" element={<LoginForm />} />
       <Route
         path={"/(.+)"}
         render={() => (
@@ -21,7 +22,9 @@ function App() {
           </>
         )}
       />
+      </Routes>
     </>
+
   );
 }
 
