@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Segment,
@@ -12,6 +12,55 @@ import RegisterForm from "./user/RegisterForm";
 
 export default function LoginForm() {
   const [show, setModal] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [connectedUser, setConnectedUser] = useState("");
+
+  const [wrongUserAdress, setWrongUserAdress] = useState(false);
+  const [wrongPassword, setWrongPassword] = useState(false);
+
+  useEffect(() => {
+    loadUsers();
+  }, [wrongPassword]);
+
+  function loadUsers() {
+    fetch("/users")
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data);
+      })
+      .catch((error) => console.log("Error fetching users", error));
+  }
+
+  function getConnectedUser() {
+    setWrongUserAdress(false);
+    setWrongPassword(false);
+    if (email !== "" && password !== "") {
+      let emailExist = users.filter((x) => x.email === email);
+      if (emailExist.length > 0) {
+        setWrongUserAdress(false);
+        let userPasswordCorrect = emailExist.filter(
+          (x) => x.password === password
+        );
+        if (userPasswordCorrect.length > 0) {
+          setConnectedUser(userPasswordCorrect);
+          setWrongPassword(false);
+        } else {
+          setWrongPassword(true);
+        }
+      } else {
+        setWrongUserAdress(true);
+      }
+    }
+  }
+
+  function clearInput() {
+    setEmail("");
+    setPassword("");
+    setWrongUserAdress(false);
+    setWrongPassword(false);
+  }
 
   function showModal() {
     setModal(true);
@@ -39,23 +88,57 @@ export default function LoginForm() {
                 fluid
                 icon="user"
                 iconPosition="left"
+                value={email}
                 placeholder="E-mail address"
+                required
+                onChange={(e) => setEmail(e.currentTarget.value)}
               />
+              {wrongUserAdress && (
+                <Message color="red">
+                  <span style={{ color: "red" }}>Invalide e-mail address. Please try again or Sign up.</span>
+                </Message>
+              )}
               <Form.Input
                 fluid
                 icon="lock"
                 iconPosition="left"
+                value={password}
                 placeholder="Password"
                 type="password"
+                required
+                onChange={(e) => setPassword(e.currentTarget.value)}
               />
-              <Button color="red" style={{ width: "120px" }}>
-              <Icon name='sign-in' />
+              {wrongPassword && (
+                <Message color="red">
+                  <span style={{ color: "red" }}>Wrong password. Please try again.</span>
+                </Message>
+              )}
+              <Button
+                onClick={getConnectedUser}
+                color="red"
+                style={{ width: "120px" }}
+              >
+                <Icon name="sign-in" />
                 Login
+              </Button>
+              <Button onClick={clearInput} style={{ width: "120px" }}>
+                <Icon name="undo" />
+                Reset
               </Button>
             </Segment>
           </Form>
-            <Message>
-              <p> New to us? <span onClick={showModal} style={{cursor:'pointer', color : 'red'}}> Sign Up</span></p>
+          <Message>
+            <p>
+              {" "}
+              New to us?{" "}
+              <span
+                onClick={showModal}
+                style={{ cursor: "pointer", color: "red" }}
+              >
+                {" "}
+                Sign Up
+              </span>
+            </p>
           </Message>
           <RegisterForm show={show} handleClose={hideModal} />
         </Grid.Column>
