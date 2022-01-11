@@ -2,29 +2,41 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import LoginForm from "../LoginForm";
 import NavBar from "./NavBar";
-//import InterestDashboard from "../interests/dashboard/InterestDashboard";
-//import InterestDetails from "../interests/details/InterestDetails";
+import InterestDashboard from "../interests/dashboard/InterestDashboard";
+import InterestDetails from "../interests/details/InterestDetails";
+import { Container } from "semantic-ui-react";
 
 function App() {
   return (
     <>
-    <Routes>
+      {/* <Routes>
       <Route path="/" element={<LoginForm />} />
-      <Route
-        path={"/(.+)"}
-        render={() => (
-          <>
+        <Routes>
             <NavBar />
-            {/*  <Container>
-              <Route exact path="/interests" component={InterestDashboard} />
-              <Route path="/interests/:id" component={InterestDetails} />
-            </Container> */}
-          </>
-        )}
-      />
+          <Route path="/interests" exact element={<InterestDashboard />} />
+        </Routes>
+      </Routes> */}
+      <Routes>
+        <Route exact path="/" element={<LoginForm />} />
+        <Route
+          path={"/(.+)"}
+          render={() => (
+            <>
+              <NavBar />
+              <Container style={{ marginTop: "7em" }}>
+                <Routes>
+                  <Route
+                    path="/interests"
+                    element={<InterestDashboard />}
+                  />
+                </Routes>
+              </Container>
+            </>
+          )}
+         
+        />
       </Routes>
     </>
-
   );
 }
 
