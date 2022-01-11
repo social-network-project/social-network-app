@@ -1,5 +1,5 @@
 export default function InterestDashboard() {
     return (
-        <div></div>
+        <div><h2>Interests list </h2></div>
     )
 }
