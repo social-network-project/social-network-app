@@ -46,10 +46,13 @@ export default function LoginForm() {
         let userPasswordCorrect = emailExist.filter(
           (x) => x.password === password
         );
+        // if user email and password exist
         if (userPasswordCorrect.length > 0) {
           setConnectedUser(userPasswordCorrect);
           setWrongPassword(false);
-          navigate("/interests");
+          console.log(userPasswordCorrect);
+          // TODO : fix connected user data to be passed to Interest dashboard
+          navigate("/interests", userPasswordCorrect);
         } else {
           setWrongPassword(true);
         }
