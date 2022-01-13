@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
-import "./App.css";
+("");
 
 function Post() {
   const firstRender = useRef(true);
@@ -45,30 +45,24 @@ function Post() {
   }, []);
 
   return (
-    <div className="App">
-      <div className="form-box">
-        <form onSubmit={addPost} className="post-form">
-          <label>Post subject</label>
-          <input
-            className="subjectInput"
-            type="text"
-            placeholder="Enter post subject..."
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-          />
-          <label className="captionLabel">Caption</label>
-          <input
-            className="captionInput"
-            type="text"
-            placeholder="Enter caption..."
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-          />
-          <button type="submit" className="postBtn">
-            Post
-          </button>
-        </form>
-      </div>
+    <div>
+      <form onSubmit={addPost}>
+        <label>Post subject</label>
+        <input
+          type="text"
+          placeholder="Enter post subject..."
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+        />
+        <label>Caption</label>
+        <input
+          type="text"
+          placeholder="Enter caption..."
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+        />
+        <button type="submit">Post</button>
+      </form>
       {posts.map((post) => (
         <div key={post.id}>
           <h2>{post.postSubject}</h2>
