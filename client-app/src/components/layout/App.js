@@ -18,6 +18,15 @@ function App() {
             </>
           }
         />
+        <Route
+          exact
+          path="/interests/:idUser"
+          element={
+            <>
+              <NavBar /> <InterestDashboard />
+            </>
+          }
+        />
       </Routes>
     </>
   );
