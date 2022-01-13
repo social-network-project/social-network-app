@@ -9,14 +9,14 @@ createServer({
   seeds(server) {
       //users
     server.create("user", {
-      id: uuid(),
+      id: 'user1',
       username: "asmaa-unique-name",
       displayName: "asmaa",
       email: "zaidane@gmail.com",
       password: "123",
     });
     server.create("user", {
-        id: uuid(),
+        id: 'user2',
         username: "unique-name",
         displayName: "test",
         email: "test@gmail.com",
@@ -24,46 +24,46 @@ createServer({
       });
       //interests
       server.create("interest", {
-        id: uuid(),
+        id: 'group1',
         title: "Artistic",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         image: "/images/interests/artistic.jpg",
-        users: ['zaidane@gmail.com','test@gmail.com'],
+        users: ['user1','user2'],
       });
       server.create("interest", {
-        id: uuid(),
+        id: 'group2',
         title: "Cooking & Baking",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         image: "/images/interests/cooking.jpg",
-        users: ['zaidane@gmail.com','test@gmail.com'],
+        users: ['user1','user2'],
       });
       server.create("interest", {
-        id: uuid(),
+        id: 'group3',
         title: "Foreign languages",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         image: "/images/interests/foreign-languages.jpg",
-        users: ['test@gmail.com'],
+        users: ['user2'],
       });
       server.create("interest", {
-        id: uuid(),
+        id: 'group4',
         title: "Gaming",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         image: "/images/interests/gaming.jpg",
-        users: ['zaidane@gmail.com','test@gmail.com'],
+        users: ['user1', 'user2'],
       });
       server.create("interest", {
-        id: uuid(),
+        id: 'group5',
         title: "Outdoor activities",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         image: "/images/interests/outdoor-activities.jpg",
         users: [],
       });
       server.create("interest", {
-        id: uuid(),
+        id: 'group6',
         title: "Travel",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         image: "/images/interests/travel.jpg",
-        users: ['zaidane@gmail.com'],
+        users: ['user1'],
       });
   },
   routes() {

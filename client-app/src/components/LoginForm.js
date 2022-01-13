@@ -16,7 +16,6 @@ export default function LoginForm() {
   const [users, setUsers] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [connectedUser, setConnectedUser] = useState("");
 
   const [wrongUserAdress, setWrongUserAdress] = useState(false);
   const [wrongPassword, setWrongPassword] = useState(false);
@@ -48,11 +47,8 @@ export default function LoginForm() {
         );
         // if user email and password exist
         if (userPasswordCorrect.length > 0) {
-          setConnectedUser(userPasswordCorrect);
           setWrongPassword(false);
-          console.log(userPasswordCorrect);
-          // TODO : fix connected user data to be passed to Interest dashboard
-          navigate("/interests", userPasswordCorrect);
+          navigate(`/interests/${userPasswordCorrect[0].id}`);
         } else {
           setWrongPassword(true);
         }

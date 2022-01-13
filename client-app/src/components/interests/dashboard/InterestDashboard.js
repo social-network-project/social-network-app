@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams  } from "react-router-dom";
 import { Card, Image, Icon, Container } from "semantic-ui-react";
 
 export default function InterestDashboard() {
   const [interests, setInterests] = useState([]);
   const connectedUser = useLocation();
+  const params = useParams();
 
   useEffect(() => {
     loadInterests();
@@ -34,7 +35,7 @@ export default function InterestDashboard() {
             <Card.Content extra>
               <a href="#">
                 <Icon name="user" />
-                {interest.users.length} Friends
+                {interest.users.length} Members
               </a>
             </Card.Content>
           </Card>
