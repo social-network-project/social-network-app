@@ -1,30 +1,34 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
 import LoginForm from "../LoginForm";
 import NavBar from "./NavBar";
-//import InterestDashboard from "../interests/dashboard/InterestDashboard";
-//import InterestDetails from "../interests/details/InterestDetails";
+import InterestDashboard from "../interests/dashboard/InterestDashboard";
 
 function App() {
   return (
     <>
-    <Routes>
-      <Route path="/" element={<LoginForm />} />
-      <Route
-        path={"/(.+)"}
-        render={() => (
-          <>
-            <NavBar />
-            {/*  <Container>
-              <Route exact path="/interests" component={InterestDashboard} />
-              <Route path="/interests/:id" component={InterestDetails} />
-            </Container> */}
-          </>
-        )}
-      />
+      <Routes>
+        <Route exact path="/" element={<LoginForm />} />
+        <Route
+          exact
+          path="/interests"
+          element={
+            <>
+              <NavBar /> <InterestDashboard />
+            </>
+          }
+        />
+        <Route
+          exact
+          path="/interests/:idUser"
+          element={
+            <>
+              <NavBar /> <InterestDashboard />
+            </>
+          }
+        />
       </Routes>
     </>
-
   );
 }
 
