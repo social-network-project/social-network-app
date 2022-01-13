@@ -9,16 +9,18 @@ import {
   Icon,
 } from "semantic-ui-react";
 import RegisterForm from "./user/RegisterForm";
+import { useNavigate } from "react-router";
 
 export default function LoginForm() {
   const [show, setModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [connectedUser, setConnectedUser] = useState("");
 
   const [wrongUserAdress, setWrongUserAdress] = useState(false);
   const [wrongPassword, setWrongPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadUsers();
@@ -43,9 +45,10 @@ export default function LoginForm() {
         let userPasswordCorrect = emailExist.filter(
           (x) => x.password === password
         );
+        // if user email and password exist
         if (userPasswordCorrect.length > 0) {
-          setConnectedUser(userPasswordCorrect);
           setWrongPassword(false);
+          navigate(`/interests/${userPasswordCorrect[0].id}`);
         } else {
           setWrongPassword(true);
         }
@@ -94,8 +97,10 @@ export default function LoginForm() {
                 onChange={(e) => setEmail(e.currentTarget.value)}
               />
               {wrongUserAdress && (
-                <Message color="red">
-                  <span style={{ color: "red" }}>Invalide e-mail address. Please try again or Sign up.</span>
+                <Message negative>
+                  <span>
+                    Invalide e-mail address. Please try again or Sign up.
+                  </span>
                 </Message>
               )}
               <Form.Input
@@ -109,8 +114,8 @@ export default function LoginForm() {
                 onChange={(e) => setPassword(e.currentTarget.value)}
               />
               {wrongPassword && (
-                <Message color="red">
-                  <span style={{ color: "red" }}>Wrong password. Please try again.</span>
+                <Message negative>
+                  <span>Wrong password. Please try again.</span>
                 </Message>
               )}
               <Button
@@ -129,8 +134,7 @@ export default function LoginForm() {
           </Form>
           <Message>
             <p>
-              {" "}
-              New to us?{" "}
+              New to us?
               <span
                 onClick={showModal}
                 style={{ cursor: "pointer", color: "red" }}
@@ -140,7 +144,12 @@ export default function LoginForm() {
               </span>
             </p>
           </Message>
-          <RegisterForm show={show} handleClose={hideModal} />
+          <RegisterForm
+            show={show}
+            handleClose={hideModal}
+            users={users}
+            setUsers={setUsers}
+          />
         </Grid.Column>
       </Grid>
     </>
