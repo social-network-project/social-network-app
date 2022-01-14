@@ -1,5 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import { Button, Form, FormInput, Label, TextArea } from "semantic-ui-react";
+import {
+  Button,
+  Form,
+  FormInput,
+  FormTextArea,
+  Input,
+  Label,
+  TextArea,
+} from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 ("");
 
@@ -75,15 +83,15 @@ function Post() {
   return (
     <div>
       <Form onSubmit={handleSumbit}>
-        <Label>Post subject</Label>
-        <FormInput
+        <label>Post subject</label>
+        <Input
           type="text"
           placeholder="Enter post subject..."
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
         />
         <Label>Caption</Label>
-        <FormInput
+        <Input
           type="text"
           placeholder="Enter caption..."
           value={caption}
