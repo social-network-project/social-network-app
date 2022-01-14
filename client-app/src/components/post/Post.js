@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Button, Form, FormInput, Label, TextArea } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 ("");
 
@@ -7,10 +8,15 @@ function Post() {
 
   const [subject, setSubject] = useState("");
   const [caption, setCaption] = useState("");
+  const [currentPostId, setCurrentPostId] = useState(null);
   const [posts, setPosts] = useState([]);
 
-  const addPost = (e) => {
-    e.preventDefault();
+  const clearInputPost = () => {
+    setSubject("");
+    setCaption("");
+  };
+
+  const addPost = () => {
     setPosts([
       ...posts,
       {
@@ -19,8 +25,30 @@ function Post() {
         id: uuidv4(),
       },
     ]);
-    setSubject("");
-    setCaption("");
+    clearInputPost();
+  };
+
+  const editPost = (post) => {
+    setSubject(post.postSubject);
+    setCaption(post.postCaption);
+    setCurrentPostId(post.postId);
+  };
+
+  const updatePost = () => {
+    setPosts(
+      posts.map((post) =>
+        post.postId === currentPostId
+          ? { ...posts, postSubject: subject, postCaption: caption }
+          : post,
+      ),
+    );
+  };
+
+  const handleSumbit = (e) => {
+    e.preventDefault();
+    clearInputPost();
+    setCurrentPostId(null);
+    !currentPostId ? addPost() : updatePost();
   };
 
   const removePost = (id) => {
@@ -46,28 +74,33 @@ function Post() {
 
   return (
     <div>
-      <form onSubmit={addPost}>
-        <label>Post subject</label>
-        <input
+      <Form onSubmit={handleSumbit}>
+        <Label>Post subject</Label>
+        <FormInput
           type="text"
           placeholder="Enter post subject..."
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
         />
-        <label>Caption</label>
-        <input
+        <Label>Caption</Label>
+        <FormInput
           type="text"
           placeholder="Enter caption..."
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
         />
-        <button type="submit">Post</button>
-      </form>
+        <Button type="submit">
+          {currentPostId !== null ? "Update" : "Post"}
+        </Button>
+      </Form>
       {posts.map((post) => (
         <div key={post.id}>
           <h2>{post.postSubject}</h2>
           <p>{post.postCaption}</p>
-          <button onClick={() => removePost(post.id)}>Delete post</button>
+          <Button secondary onClick={() => removePost(post.id)}>
+            Delete post
+          </Button>
+          <Button onClick={() => editPost(post)}>Edit post</Button>
         </div>
       ))}
     </div>
