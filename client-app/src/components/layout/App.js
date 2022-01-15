@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
 import LoginForm from "../LoginForm";
-import NavBar from "./NavBar";
+import NavBar from "../layout/Navbar/NavBar";
 import InterestDashboard from "../interests/dashboard/InterestDashboard";
 
 function App() {
