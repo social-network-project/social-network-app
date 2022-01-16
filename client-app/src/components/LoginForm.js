@@ -48,7 +48,7 @@ export default function LoginForm() {
         // if user email and password exist
         if (userPasswordCorrect.length > 0) {
           setWrongPassword(false);
-          navigate(`/interests/${userPasswordCorrect[0].id}`);
+          navigate(`/groups/${userPasswordCorrect[0].id}`);
         } else {
           setWrongPassword(true);
         }
