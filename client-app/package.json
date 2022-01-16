@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
-    "miragejs": "^0.1.43"
+    "miragejs": "^0.1.43",
+    "react-error-overlay": "^6.0.9"
   }
 }
