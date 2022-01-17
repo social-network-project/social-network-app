@@ -32,7 +32,7 @@ export default function SidebarMenu(props) {
       <UserIcon />
       <Menu vertical>
         <MenuItem>
-          <Link to="/groupdashboard">Home</Link>
+          <Link to="/groups/:idUser">Home</Link>
         </MenuItem>
         <Dropdown text="Create New" pointing="left" className="link item">
           <DropdownMenu>

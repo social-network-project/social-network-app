@@ -2,7 +2,7 @@
 import { useState } from "react";
 import ToggleBtn from "./ToggleBtn";
 import SidebarMenu from "./SidebarMenu";
-import { Menu, Item, Segment } from "semantic-ui-react";
+import { Menu } from "semantic-ui-react";
 import HeaderLogo from "./HeaderLogo";
 
 export default function NavBar({ children }) {
