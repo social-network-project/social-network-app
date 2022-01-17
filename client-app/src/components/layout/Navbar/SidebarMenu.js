@@ -28,7 +28,9 @@ export default function SidebarMenu(props) {
         <Menu.Item>Home</Menu.Item>
         <Menu.Item>Create New Group</Menu.Item>
         <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Sign Out</Menu.Item>
+        <Menu.Item>
+          <Link to="/">Sign Out</Link>
+        </Menu.Item>
       </Menu>
     </div>
   );
