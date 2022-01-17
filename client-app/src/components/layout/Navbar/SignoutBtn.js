@@ -9,5 +9,10 @@ export default function SignoutBtn(props) {
     e.preventDefault();
     setSignout(!signout);
   };
-  return <>{/* <Button></Button> */}</>;
+  return (
+    <>
+      {" "}
+      <Button></Button>{" "}
+    </>
+  );
 }
