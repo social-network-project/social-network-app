@@ -1,15 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  Button,
-  Form,
-  FormInput,
-  FormTextArea,
-  Input,
-  Label,
-  TextArea,
-} from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-("");
 
 function Post() {
   const firstRender = useRef(true);
@@ -17,6 +7,7 @@ function Post() {
   const [subject, setSubject] = useState("");
   const [caption, setCaption] = useState("");
   const [currentPostId, setCurrentPostId] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [posts, setPosts] = useState([]);
 
   const clearInputPost = () => {
@@ -30,6 +21,7 @@ function Post() {
       {
         postSubject: subject,
         postCaption: caption,
+        postImage: selectedImage,
         id: uuidv4(),
       },
     ]);
@@ -39,24 +31,28 @@ function Post() {
   const editPost = (post) => {
     setSubject(post.postSubject);
     setCaption(post.postCaption);
-    setCurrentPostId(post.postId);
+    setSelectedImage(post.postImage);
+    setCurrentPostId(post.id);
+    console.log(post);
   };
 
   const updatePost = () => {
-    setPosts(
-      posts.map((post) =>
-        post.postId === currentPostId
-          ? { ...posts, postSubject: subject, postCaption: caption }
-          : post,
-      ),
-    );
+    setPosts([
+      ...posts.filter((x) => x.id !== currentPostId),
+      {
+        postSubject: subject,
+        postCaption: caption,
+        postImage: selectedImage,
+        id: currentPostId,
+      },
+    ]);
   };
 
   const handleSumbit = (e) => {
     e.preventDefault();
     clearInputPost();
     setCurrentPostId(null);
-    !currentPostId ? addPost() : updatePost();
+    !currentPostId ? addPost() : updatePost(currentPostId);
   };
 
   const removePost = (id) => {
@@ -65,11 +61,9 @@ function Post() {
 
   useEffect(() => {
     if (firstRender.current) {
-      console.log("true");
       firstRender.current = false;
     } else {
       localStorage.setItem("Post", JSON.stringify([...posts]));
-      console.log("not first page load");
     }
   }, [posts]);
 
@@ -82,33 +76,38 @@ function Post() {
 
   return (
     <div>
-      <Form onSubmit={handleSumbit}>
+      <form onSubmit={handleSumbit}>
         <label>Post subject</label>
-        <Input
+        <input
           type="text"
           placeholder="Enter post subject..."
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
         />
-        <Label>Caption</Label>
-        <Input
+        <label className="captionLabel">Image</label>
+        <input
+          type="file"
+          onChange={(e) => setSelectedImage(e.target.files[0])}
+        />
+        <button>Upload</button>
+        <label>Caption</label>
+        <input
           type="text"
           placeholder="Enter caption..."
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
         />
-        <Button type="submit">
+        <button type="submit">
           {currentPostId !== null ? "Update" : "Post"}
-        </Button>
-      </Form>
+        </button>
+      </form>
       {posts.map((post) => (
         <div key={post.id}>
           <h2>{post.postSubject}</h2>
+          <img>{post.postImage}</img>
           <p>{post.postCaption}</p>
-          <Button secondary onClick={() => removePost(post.id)}>
-            Delete post
-          </Button>
-          <Button onClick={() => editPost(post)}>Edit post</Button>
+          <button onClick={() => removePost(post.id)}>Delete post</button>
+          <button onClick={() => editPost(post)}>Edit post</button>
         </div>
       ))}
     </div>
