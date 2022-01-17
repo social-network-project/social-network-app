@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Form, Button, Container, Card, Image, Icon } from "semantic-ui-react";
+import { Button, Container, Card, Icon } from "semantic-ui-react";
+import BioForm from "./BioForm";
 
 function AddBio() {
   const firstRender = useRef(true);
@@ -9,6 +10,7 @@ function AddBio() {
   const [aboutMe, setAboutMe] = useState("");
   const [currentBioId, setCurrentBioId] = useState("");
   const [bioInfo, setBioInfo] = useState([]);
+  const [bioEditOpen, setBioEditOpen] = useState(false);
 
   const clearInputBio = () => {
     setName("");
@@ -28,6 +30,7 @@ function AddBio() {
   };
 
   const editBio = (bio) => {
+    setBioEditOpen((bioEditOpen) => !bioEditOpen);
     setName(bio.bioName);
     setAboutMe(bio.bioAboutMe);
     setCurrentBioId(bio.id);
@@ -35,13 +38,14 @@ function AddBio() {
 
   const updateBio = () => {
     setBioInfo([
-      bioInfo.filter((ed) => ed.id !== currentBioId),
+      ...bioInfo.filter((ed) => ed.id !== currentBioId),
       {
         bioName: name,
         bioAboutMe: aboutMe,
         id: currentBioId,
       },
     ]);
+    setBioEditOpen(false);
   };
 
   const handleSumbit = (e) => {
@@ -72,38 +76,27 @@ function AddBio() {
 
   return (
     <Container>
-      <Form onSubmit={handleSumbit}>
-        <Form.Input
-          width={6}
-          required
-          label="Name"
-          type="text"
-          placeholder="My name is..."
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <Form.TextArea
-          required
-          width={6}
-          rows={6}
-          label="About me"
-          type="text"
-          placeholder="About me..."
-          value={aboutMe}
-          onChange={(e) => setAboutMe(e.target.value)}
-        />
-        <Button positive type="submit">
-          {currentBioId !== null ? "Update" : "Save"}
-        </Button>
-      </Form>
       {bioInfo.map((bio) => (
         <Card key={bio.id}>
+          <Button onClick={() => editBio(bio)}>
+            <Icon name="pen square" />
+          </Button>
           <Card.Content>
             <Card.Header>{bio.bioName}</Card.Header>
             <Card.Description>{bio.bioAboutMe}</Card.Description>
           </Card.Content>
           {/* <button onClick={() => removeBio(bio.id)}>Delete</button> */}
-          <Button onClick={() => editBio(bio)}>Edit</Button>
+          {bioEditOpen && (
+            <BioForm
+              name={name}
+              setName={setName}
+              aboutMe={aboutMe}
+              setAboutMe={setAboutMe}
+              currentBioId={currentBioId}
+              handleSumbit={handleSumbit}
+              editBio={editBio}
+            ></BioForm>
+          )}
         </Card>
       ))}
     </Container>

@@ -1,19 +1,29 @@
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Form, Button, Container, Card, Image, Icon } from "semantic-ui-react";
+import { Button, Container, Card, Image, Icon } from "semantic-ui-react";
+import PostForm from "./PostForm";
 
-function AddPost() {
+const AddPost = () => {
   const firstRender = useRef(true);
 
   const [subject, setSubject] = useState("");
   const [caption, setCaption] = useState("");
   const [currentPostId, setCurrentPostId] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState();
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [posts, setPosts] = useState([]);
 
   const clearInputPost = () => {
     setSubject("");
     setCaption("");
+  };
+
+  const imageChange = (e) => {
+    setSelectedImage(e.target.files[0]);
+  };
+
+  const removeSelectedImage = () => {
+    setSelectedImage();
   };
 
   const addPost = () => {
@@ -30,6 +40,7 @@ function AddPost() {
   };
 
   const editPost = (post) => {
+    setIsEditOpen(true);
     setSubject(post.postSubject);
     setCaption(post.postCaption);
     setSelectedImage(post.postImage);
@@ -43,7 +54,6 @@ function AddPost() {
       {
         postSubject: subject,
         postCaption: caption,
-        postImage: selectedImage,
         id: currentPostId,
       },
     ]);
@@ -58,6 +68,11 @@ function AddPost() {
 
   const removePost = (id) => {
     setPosts(posts.filter((post) => post.id !== id));
+  };
+
+  const cancelEdit = () => {
+    clearInputPost();
+    setCurrentPostId(null);
   };
 
   useEffect(() => {
@@ -77,35 +92,20 @@ function AddPost() {
 
   return (
     <Container>
-      <Form onSubmit={handleSumbit}>
-        <Form.Input
-          width={4}
-          label="Subject"
-          type="text"
-          placeholder="Enter post subject..."
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-        />
-        <Form.Input
-          width={4}
-          label="Image"
-          type="file"
-          onChange={(e) => setSelectedImage(e.target.files[0])}
-        />
-        <Button>Upload</Button>
-        <Form.TextArea
-          rows={5}
-          width={6}
-          label="Caption"
-          type="text"
-          placeholder="Enter caption..."
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-        />
-        <Button positive type="submit">
-          {currentPostId !== null ? "Update" : "Post"}
-        </Button>
-      </Form>
+      <PostForm
+        subject={subject}
+        setSubject={setSubject}
+        selectedImage={selectedImage}
+        setSelectedImage={setSelectedImage}
+        caption={caption}
+        setCaption={setCaption}
+        handleSumbit={handleSumbit}
+        imageChange={imageChange}
+        removeSelectedImage={removeSelectedImage}
+        cancelEdit={cancelEdit}
+        isEditOpen={isEditOpen}
+        setIsEditOpen={setIsEditOpen}
+      />
       {posts.map((post) => (
         <Card key={post.id}>
           <Card.Content>
@@ -128,6 +128,6 @@ function AddPost() {
       ))}
     </Container>
   );
-}
+};
 
 export default AddPost;
