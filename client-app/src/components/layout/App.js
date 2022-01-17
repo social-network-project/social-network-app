@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Route, Routes, useLocation, useParams } from "react-router-dom";
 import LoginForm from "../LoginForm";
-import NavBar from "./NavBar";
+import NavBar from "../layout/Navbar/NavBar";
 import GroupDashboard from "../groups/dashboard/GroupDashboard";
 import GroupFeed from "../groups/feed/GroupFeed";
 import Profile from "../user/Profile";
+import Settings from "../layout/other-pages/Settings";
+import NotFound from "../layout/other-pages/NotFound";
 import AddPost from "../post/AddPost";
 import AddBio from "../bio/AddBio";
 
@@ -70,6 +72,25 @@ function App() {
           element={
             <>
               <NavBar /> <Profile />
+            </>
+          }
+        />
+        <Route
+          exact
+          path="/settings/:idUser"
+          element={
+            <>
+              <NavBar /> <Settings />
+            </>
+          }
+        />
+        <Route
+          path="*"
+          exact
+          element={
+            <>
+              <NavBar />
+              <NotFound />
             </>
           }
         />
