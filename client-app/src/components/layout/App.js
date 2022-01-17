@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes, useLocation, useParams  } from "react-router-dom";
+import { Route, Routes, useLocation, useParams } from "react-router-dom";
 import LoginForm from "../LoginForm";
 import NavBar from "./NavBar";
 import GroupDashboard from "../groups/dashboard/GroupDashboard";
@@ -10,13 +10,12 @@ function App() {
   const [interests, setInterests] = useState([]);
   const [users, setUsers] = useState([]);
   const connectedUser = useLocation();
- 
 
   useEffect(() => {
     loadInterests();
     loadUsers();
     console.log(interests);
-    console.log('welcome' + connectedUser);
+    console.log("welcome" + connectedUser);
   }, []);
 
   function loadInterests() {
@@ -31,14 +30,18 @@ function App() {
     fetch("/users")
       .then((res) => res.json())
       .then((data) => {
-        setUsers(data);        
+        setUsers(data);
       })
-      .catch((error) => console.log("Error fetching users", error));   
+      .catch((error) => console.log("Error fetching users", error));
   }
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<LoginForm users={users} setUsers={setUsers}/>} />
+        <Route
+          exact
+          path="/"
+          element={<LoginForm users={users} setUsers={setUsers} />}
+        />
         <Route
           exact
           path="/groups/:idUser"
@@ -62,7 +65,7 @@ function App() {
           path="/profile/:idUser"
           element={
             <>
-              <NavBar /> <Profile  />
+              <NavBar /> <Profile />
             </>
           }
         />
