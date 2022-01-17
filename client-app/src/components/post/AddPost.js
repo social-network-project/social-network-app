@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-function Post() {
+function AddPost() {
   const firstRender = useRef(true);
 
   const [subject, setSubject] = useState("");
@@ -114,4 +114,4 @@ function Post() {
   );
 }
 
-export default Post;
+export default AddPost;

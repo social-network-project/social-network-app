@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-function Bio() {
+function AddBio() {
   const firstRender = useRef(true);
 
   const [name, setName] = useState("");
@@ -105,4 +105,4 @@ function Bio() {
   );
 }
 
-export default Bio;
+export default AddBio;
