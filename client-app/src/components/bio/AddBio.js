@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Form, Button, Container, Card, Image, Icon } from "semantic-ui-react";
 
-function Bio() {
+function AddBio() {
   const firstRender = useRef(true);
 
   const [name, setName] = useState("");
@@ -70,39 +71,43 @@ function Bio() {
   }, []);
 
   return (
-    <div>
-      <form onSubmit={handleSumbit}>
-        <label>Name</label>
-        <input
-          className="subjectInput"
+    <Container>
+      <Form onSubmit={handleSumbit}>
+        <Form.Input
+          width={6}
+          required
+          label="Name"
           type="text"
           placeholder="My name is..."
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <label className="captionLabel">About me</label>
-        <input
-          className="captionInput"
+        <Form.TextArea
+          required
+          width={6}
+          rows={6}
+          label="About me"
           type="text"
           placeholder="About me..."
           value={aboutMe}
           onChange={(e) => setAboutMe(e.target.value)}
         />
-
-        <button type="submit" className="postBtn">
+        <Button positive type="submit">
           {currentBioId !== null ? "Update" : "Save"}
-        </button>
-      </form>
+        </Button>
+      </Form>
       {bioInfo.map((bio) => (
-        <div key={bio.id}>
-          <h2>{bio.bioName}</h2>
-          <p>{bio.bioAboutMe}</p>
+        <Card key={bio.id}>
+          <Card.Content>
+            <Card.Header>{bio.bioName}</Card.Header>
+            <Card.Description>{bio.bioAboutMe}</Card.Description>
+          </Card.Content>
           {/* <button onClick={() => removeBio(bio.id)}>Delete</button> */}
-          <button onClick={() => editBio(bio)}>Edit</button>
-        </div>
+          <Button onClick={() => editBio(bio)}>Edit</Button>
+        </Card>
       ))}
-    </div>
+    </Container>
   );
 }
 
-export default Bio;
+export default AddBio;

@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Form, Button, Container, Card, Image, Icon } from "semantic-ui-react";
 
-function Post() {
+function AddPost() {
   const firstRender = useRef(true);
 
   const [subject, setSubject] = useState("");
@@ -75,43 +76,58 @@ function Post() {
   }, []);
 
   return (
-    <div>
-      <form onSubmit={handleSumbit}>
-        <label>Post subject</label>
-        <input
+    <Container>
+      <Form onSubmit={handleSumbit}>
+        <Form.Input
+          width={4}
+          label="Subject"
           type="text"
           placeholder="Enter post subject..."
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
         />
-        <label className="captionLabel">Image</label>
-        <input
+        <Form.Input
+          width={4}
+          label="Image"
           type="file"
           onChange={(e) => setSelectedImage(e.target.files[0])}
         />
-        <button>Upload</button>
-        <label>Caption</label>
-        <input
+        <Button>Upload</Button>
+        <Form.TextArea
+          rows={5}
+          width={6}
+          label="Caption"
           type="text"
           placeholder="Enter caption..."
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
         />
-        <button type="submit">
+        <Button positive type="submit">
           {currentPostId !== null ? "Update" : "Post"}
-        </button>
-      </form>
+        </Button>
+      </Form>
       {posts.map((post) => (
-        <div key={post.id}>
-          <h2>{post.postSubject}</h2>
-          <img>{post.postImage}</img>
-          <p>{post.postCaption}</p>
-          <button onClick={() => removePost(post.id)}>Delete post</button>
-          <button onClick={() => editPost(post)}>Edit post</button>
-        </div>
+        <Card key={post.id}>
+          <Card.Content>
+            <Card.Header>{post.postSubject}</Card.Header>
+            <Image>{post.postImage}</Image>
+            <Card.Description>{post.postCaption}</Card.Description>
+          </Card.Content>
+          <Card.Content extra>
+            <a>
+              <Icon name="user" />
+            </a>
+          </Card.Content>
+          <Button.Group>
+            <Button negative onClick={() => removePost(post.id)}>
+              Delete post
+            </Button>
+            <Button onClick={() => editPost(post)}>Edit post</Button>
+          </Button.Group>
+        </Card>
       ))}
-    </div>
+    </Container>
   );
 }
 
-export default Post;
+export default AddPost;

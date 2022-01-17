@@ -5,6 +5,8 @@ import NavBar from "./NavBar";
 import GroupDashboard from "../groups/dashboard/GroupDashboard";
 import GroupFeed from "../groups/feed/GroupFeed";
 import Profile from "../user/Profile";
+import AddPost from "../post/AddPost";
+import AddBio from "../bio/AddBio";
 
 function App() {
   const [interests, setInterests] = useState([]);
@@ -42,6 +44,8 @@ function App() {
           path="/"
           element={<LoginForm users={users} setUsers={setUsers} />}
         />
+        <Route exact path="/addpost" element={<AddPost />} />
+        <Route exact path="/addbio" element={<AddBio />} />
         <Route
           exact
           path="/groups/:idUser"
