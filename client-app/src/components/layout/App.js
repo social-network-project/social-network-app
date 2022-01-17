@@ -5,6 +5,8 @@ import NavBar from "../layout/Navbar/NavBar";
 import GroupDashboard from "../groups/dashboard/GroupDashboard";
 import GroupFeed from "../groups/feed/GroupFeed";
 import Profile from "../user/Profile";
+import Settings from "../layout/other-pages/Settings";
+import NotFound from "../layout/other-pages/NotFound";
 
 function App() {
   const [interests, setInterests] = useState([]);
@@ -66,6 +68,25 @@ function App() {
           element={
             <>
               <NavBar /> <Profile />
+            </>
+          }
+        />
+        <Route
+          exact
+          path="/settings/:idUser"
+          element={
+            <>
+              <NavBar /> <Settings />
+            </>
+          }
+        />
+        <Route
+          path="*"
+          exact
+          element={
+            <>
+              <NavBar />
+              <NotFound />
             </>
           }
         />

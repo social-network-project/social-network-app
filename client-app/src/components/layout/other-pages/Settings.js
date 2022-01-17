@@ -1,40 +1,29 @@
-import { useState } from "react";
-import { Button, Header, Item, Modal } from "semantic-ui-react";
+import { useEffect } from "react";
+import { Container, Header, Icon, Input, Radio, Item } from "semantic-ui-react";
 
 export default function Settings() {
-  const [open, setOpen] = useState(false);
-
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   return (
-    <Modal
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      open={open}
-      trigger={<Button>Show Modal</Button>}
-    >
-      <Modal.Header>Select a Photo</Modal.Header>
-      <Modal.Content image>
-        <Image size="medium" src="/images/avatar/large/rachel.png" wrapped />
-        <Modal.Description>
-          <Header>Default Profile Image</Header>
-          <p>
-            We've found the following gravatar image associated with your e-mail
-            address.
-          </p>
-          <p>Is it okay to use this photo?</p>
-        </Modal.Description>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button color="black" onClick={() => setOpen(false)}>
-          Nope
-        </Button>
-        <Button
-          content="Yep, that's me"
-          labelPosition="right"
-          icon="checkmark"
-          onClick={() => setOpen(false)}
-          positive
-        />
-      </Modal.Actions>
-    </Modal>
+    <Container textAlign="center" style={{ marginTop: "5rem" }}>
+      <Header as="h2" icon>
+        <Icon name="settings" />
+        Account settings
+        <Header.Subheader>Manage your account settings</Header.Subheader>
+      </Header>
+      <Item>
+        <Input list="languages" placeholder="Choose language" />
+        <datalist id="languages">
+          <option value="English" />
+          <option value="简化字/Simplified Chinese " />
+          <option value="Français" />
+        </datalist>
+      </Item>
+      <Item>
+        <label>Choice</label>
+        <Radio toggle />
+      </Item>
+    </Container>
   );
 }
