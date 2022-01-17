@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, Item, ItemGroup } from "semantic-ui-react";
+import {
+  Menu,
+  MenuItem,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+} from "semantic-ui-react";
 import UserIcon from "../../UserComponents/UserIcon";
 import * as FaIcons from "react-icons/fa";
 import "./Sidebar.css";
@@ -25,21 +31,25 @@ export default function SidebarMenu(props) {
 
       <UserIcon />
       <Menu vertical>
-        <Menu.Item>
-          <Link>Home</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link>Create New Group</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link>Settings</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link>Help</Link>
-        </Menu.Item>
-        <Menu.Item>
+        <MenuItem>
+          <Link to="/groupdashboard">Home</Link>
+        </MenuItem>
+        <Dropdown text="Create New" pointing="left" className="link item">
+          <DropdownMenu>
+            <DropdownItem>Post</DropdownItem>
+            <DropdownItem>Group</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+
+        <MenuItem>
+          <Link to="/settings">Settings</Link>
+        </MenuItem>
+        <MenuItem>
+          <Link to="/help">Help</Link>
+        </MenuItem>
+        <MenuItem>
           <Link to="/">Sign Out</Link>
-        </Menu.Item>
+        </MenuItem>
       </Menu>
     </div>
   );
