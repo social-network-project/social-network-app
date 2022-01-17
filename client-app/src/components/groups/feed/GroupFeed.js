@@ -5,25 +5,36 @@ import GroupFeedHeader from "./GroupFeedHeader";
 import GroupFeedNew from "./GroupFeedNew";
 import GroupFeedList from "./GroupFeedList";
 
-export default function GroupFeed({ interests, users }) {
+export default function GroupFeed({ interests, setInterests, users, connectedUser }) {
   const params = useParams();
   const [selectedInterest, setSelectedInterest] = useState(getInterestById(params.idGroup));
 
   useEffect(() => {
-    
-    console.log("group id= " + params.idGroup);
-    console.log("interest id= " + selectedInterest.title);
-  }, [selectedInterest]);
+    fetch(`/interests/${selectedInterest.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setSelectedInterest(data);
+      })
+      .catch((error) => console.log("Error fetching interests", error));
+  }, []);
+
   function getInterestById(id) {
     if (interests) return interests.find((x) => x.id === id);
     return null;
   }
- 
+
   return (
     <Container>
-      <GroupFeedHeader selectedInterest={selectedInterest} users={users}/>
+      <GroupFeedHeader
+        selectedInterest={selectedInterest}
+        setSelectedInterest={setSelectedInterest}
+        users={users}
+        connectedUser={connectedUser}
+        interests={interests}
+        setInterests={setInterests}
+      />
       <GroupFeedNew />
-     <GroupFeedList selectedInterest={selectedInterest} users={users} />
+      <GroupFeedList selectedInterest={selectedInterest} connectedUser={connectedUser} users={users} />
     </Container>
   );
 }

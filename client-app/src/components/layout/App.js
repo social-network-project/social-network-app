@@ -9,7 +9,8 @@ import Profile from "../user/Profile";
 function App() {
   const [interests, setInterests] = useState([]);
   const [users, setUsers] = useState([]);
-  const connectedUser = useLocation();
+  //const connectedUser = useLocation();
+  const [connectedUser, setConnectedUser] = useState("");
  
 
   useEffect(() => {
@@ -17,7 +18,7 @@ function App() {
     loadUsers();
     console.log(interests);
     console.log('welcome' + connectedUser);
-  }, []);
+  }, [connectedUser]);
 
   function loadInterests() {
     fetch("/interests")
@@ -38,7 +39,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<LoginForm users={users} setUsers={setUsers}/>} />
+        <Route exact path="/" element={<LoginForm users={users} setUsers={setUsers} setConnectedUser={setConnectedUser} />} />
         <Route
           exact
           path="/groups/:idUser"
@@ -53,7 +54,7 @@ function App() {
           path="/feed/:idGroup"
           element={
             <>
-              <NavBar /> <GroupFeed interests={interests} users={users} />
+              <NavBar /> <GroupFeed interests={interests} setInterests={setInterests} users={users} connectedUser={connectedUser} />
             </>
           }
         />

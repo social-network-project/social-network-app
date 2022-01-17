@@ -3,7 +3,6 @@ import { Link , useParams} from "react-router-dom";
 import { Card, Image, Icon, Container } from "semantic-ui-react";
 
 export default function GroupDashboard({interests}) {
-  const params = useParams();
   return (
     <Container style={{ marginTop: "7em" }}>
       <Card.Group centered style={{ maxWidth: "1143px" }}>

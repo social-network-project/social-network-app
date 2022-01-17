@@ -1,10 +1,16 @@
-import { useParams, Link } from "react-router-dom";
-import { Segment, Image, Item, Header, Icon } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { Segment, Image, Item, Header, Icon, Button } from "semantic-ui-react";
 import { useState, useEffect } from "react";
 
-export default function GroupFeedHeader({ selectedInterest, users }) {
-  const params = useParams();
-  
+export default function GroupFeedHeader({
+  selectedInterest,
+  setSelectedInterest,
+  users,
+  connectedUser,
+  interests,
+  setInterests
+}) {
+  const [joinEnabled, setJoinEnabled] = useState(true);
 
   const activityImageTextStyle = {
     position: "absolute",
@@ -15,6 +21,47 @@ export default function GroupFeedHeader({ selectedInterest, users }) {
     color: "white",
   };
 
+  function enableJoin() {
+    if (selectedInterest.users.find((u) => u === connectedUser))
+      setJoinEnabled(false);
+    else setJoinEnabled(true);
+  }
+  useEffect(() => {
+    enableJoin();
+  }, []);
+
+  function joinGroup() {
+    selectedInterest.users = [...selectedInterest.users, connectedUser];
+    setSelectedInterest(selectedInterest);
+    setInterests([...interests.filter(x => x.id !== selectedInterest.id), selectedInterest])
+    setJoinEnabled(false);
+    submitChangesToAPI();
+  }
+
+  function leaveGroup() {
+    selectedInterest.users = [
+      ...selectedInterest.users.filter((x) => x !== connectedUser),
+    ];
+    setSelectedInterest(selectedInterest);
+    setInterests([...interests.filter(x => x.id !== selectedInterest.id), selectedInterest])
+    setJoinEnabled(true);
+    submitChangesToAPI();
+  }
+  function submitChangesToAPI() {
+    fetch(`/interests/${selectedInterest.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        users: selectedInterest.users,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log("Interest not found", error);
+      });
+  }
   return (
     <Segment.Group>
       <Segment basic attached="top" style={{ padding: "0" }}>
@@ -32,6 +79,7 @@ export default function GroupFeedHeader({ selectedInterest, users }) {
                   content={selectedInterest.title}
                   style={{ color: "white" }}
                 />
+                <p> {selectedInterest.description}</p>
                 <p>Created : {selectedInterest.date}</p>
                 <Icon name="user" />
                 {selectedInterest.users.length} Members
@@ -50,9 +98,21 @@ export default function GroupFeedHeader({ selectedInterest, users }) {
               </Image.Group>
             </Item>
           </Item.Group>
+          <Item.Group style={{ width: "90%" }} attached="bottom">
+            <Button
+              color="red"
+              floated="right"
+              onClick={joinGroup}
+              disabled={!joinEnabled}
+            >
+              Join Interest
+            </Button>
+            <Button floated="right" onClick={leaveGroup} disabled={joinEnabled}>
+              Leave Interest
+            </Button>
+          </Item.Group>
         </Segment>
       </Segment>
-     
     </Segment.Group>
   );
 }

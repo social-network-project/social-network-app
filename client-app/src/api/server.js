@@ -126,6 +126,14 @@ createServer({
     this.get("/", (schema) => {
       return schema.db.interests;
     });
+    this.get("/:id", (schema, request) => {
+      let id = request.params.id;
+      return schema.db.interests.find(id);
+    });
+    this.put("/:id", (schema, request) => {
+      let newAttrs = JSON.parse(request.requestBody);
+      return schema.db.interests.update(request.params.id, newAttrs);
+    });
      //posts
      this.namespace = "posts";
      this.get("/", (schema) => {
