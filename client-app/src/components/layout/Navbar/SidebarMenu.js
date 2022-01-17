@@ -25,9 +25,18 @@ export default function SidebarMenu(props) {
 
       <UserIcon />
       <Menu vertical>
-        <Menu.Item>Home</Menu.Item>
-        <Menu.Item>Create New Group</Menu.Item>
-        <Menu.Item>Settings</Menu.Item>
+        <Menu.Item>
+          <Link>Home</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link>Create New Group</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link>Settings</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link>Help</Link>
+        </Menu.Item>
         <Menu.Item>
           <Link to="/">Sign Out</Link>
         </Menu.Item>
