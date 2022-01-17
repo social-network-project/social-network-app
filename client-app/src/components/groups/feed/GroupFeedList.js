@@ -33,7 +33,9 @@ export default function GroupFeedList({ selectedInterest, users }) {
         color="black"
         style={{ border: "none" }}
       >
-        <Header>Posts recently published</Header>
+        <Header>
+          {posts.length > 0 ? "Posts recently published" : "No posts recently published"}
+        </Header>
       </Segment>
       <Segment attached>
         <Comment.Group>
@@ -44,7 +46,7 @@ export default function GroupFeedList({ selectedInterest, users }) {
                 <p>{post.caption}</p>
                 <Image src={post.image} size="medium" centered rounded />
                 <Button
-                floated="right"
+                  floated="right"
                   color="red"
                   content="Like"
                   icon="heart"
@@ -57,21 +59,26 @@ export default function GroupFeedList({ selectedInterest, users }) {
                 />
                 {post.comments.map((comments) => (
                   <Comment key={comments.id}>
-                    {users.map((user) =>
+                    {users.map(
+                      (user) =>
                         user.id === comments.userId && (
-                          <div key={user.id} >
-                            <Comment.Avatar
-                              src={user.userImage}
-                            />
+                          <div key={user.id}>
+                            <Comment.Avatar src={user.userImage} />
                             <Comment.Content>
-                              <Comment.Author as={NavLink} to={`/profile/${user.id}`} style ={{ marginLeft:"1em" }}>
+                              <Comment.Author
+                                as={NavLink}
+                                to={`/profile/${user.id}`}
+                                style={{ marginLeft: "1em" }}
+                              >
                                 {user.displayName}
                               </Comment.Author>
                             </Comment.Content>
                           </div>
                         )
                     )}
-                    <Comment.Text style ={{ marginLeft:"3.5em" }}>{comments.comment}</Comment.Text>
+                    <Comment.Text style={{ marginLeft: "3.5em" }}>
+                      {comments.comment}
+                    </Comment.Text>
                   </Comment>
                 ))}
                 <Form reply>

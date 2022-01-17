@@ -11,9 +11,8 @@ import {
 import RegisterForm from "./user/RegisterForm";
 import { useNavigate } from "react-router";
 
-export default function LoginForm() {
+export default function LoginForm({users, setUsers}) {
   const [show, setModal] = useState(false);
-  const [users, setUsers] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,18 +21,6 @@ export default function LoginForm() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadUsers();
-  }, [wrongPassword]);
-
-  function loadUsers() {
-    fetch("/users")
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(data);
-      })
-      .catch((error) => console.log("Error fetching users", error));
-  }
 
   function getConnectedUser() {
     setWrongUserAdress(false);

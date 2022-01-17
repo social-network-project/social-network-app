@@ -38,7 +38,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<LoginForm />} />
+        <Route exact path="/" element={<LoginForm users={users} setUsers={setUsers}/>} />
         <Route
           exact
           path="/groups/:idUser"
