@@ -154,6 +154,12 @@ createServer({
     this.get("/", (schema) => {
       return schema.db.posts;
     });
+
+    this.post("/", (schema, request) => {
+      let attrs = JSON.parse(request.requestBody);
+      return schema.db.posts.insert(attrs);
+    });
+
     this.get("/:idGroup", (schema, request) => {
       let id = request.params.idGroup;
       return schema.db.posts.where({ idGroup: id });

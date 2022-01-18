@@ -6,13 +6,11 @@ const PostForm = ({
   selectedImage,
   caption,
   setCaption,
-  currentPostId,
   handleSumbit,
   removeSelectedImage,
   imageChange,
   cancelEdit,
   isEditOpen,
-  setIsEditOpen,
 }) => {
   return (
     <Form onSubmit={handleSumbit}>

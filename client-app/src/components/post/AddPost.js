@@ -9,7 +9,7 @@ const AddPost = () => {
   const [subject, setSubject] = useState("");
   const [caption, setCaption] = useState("");
   const [currentPostId, setCurrentPostId] = useState(null);
-  const [selectedImage, setSelectedImage] = useState();
+  const [selectedImage, setSelectedImage] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [posts, setPosts] = useState([]);
 
@@ -20,10 +20,11 @@ const AddPost = () => {
 
   const imageChange = (e) => {
     setSelectedImage(e.target.files[0]);
+    console.log(e.target.files[1]);
   };
 
   const removeSelectedImage = () => {
-    setSelectedImage();
+    setSelectedImage(null);
   };
 
   const addPost = () => {
@@ -89,6 +90,25 @@ const AddPost = () => {
       setPosts(JSON.parse([...posts, newPosts]));
     }
   }, []);
+
+  const postToServer = () => {
+    fetch("/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        id: uuid(),
+        idUser: 
+        subject: subject,
+        caption: caption,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setPosts([...posts, result]);
+      })
+      .catch((error) => {
+        console.log("Error adding post.", error);
+      });
+  };
 
   return (
     <Container>
