@@ -90,7 +90,7 @@ function AddBio() {
   }, []);
 
   const bioToServer = () => {
-    fetch("/users", {
+    fetch("/users.id", {
       method: "POST",
       body: JSON.stringify({
         id: uuidv4(),

@@ -17,7 +17,7 @@ export default function UserIcon() {
         <div>
           <p>Welcome, {params.idUser}</p>
           <p>
-            <Link to="/profile/:idUser">Go to Profile</Link>
+            <Link to="/profile/:id">Go to Profile</Link>
           </p>
         </div>
       </Item>

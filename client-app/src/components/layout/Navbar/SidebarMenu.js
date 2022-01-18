@@ -33,7 +33,7 @@ export default function SidebarMenu(props) {
       <UserIcon />
       <Menu vertical>
         <MenuItem>
-          <Link to="/groups/:idUser">Home</Link>
+          <Link to="/groups/:id">Home</Link>
         </MenuItem>
         <Dropdown text="Create New" pointing="left" className="link item">
           <DropdownMenu>
@@ -43,7 +43,7 @@ export default function SidebarMenu(props) {
         </Dropdown>
 
         <MenuItem>
-          <Link to="/settings/:idUser">Settings</Link>
+          <Link to="/settings/:id">Settings</Link>
         </MenuItem>
         <MenuItem>
           {/* <SignoutBtn></SignoutBtn> */}
