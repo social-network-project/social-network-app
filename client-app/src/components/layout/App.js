@@ -11,17 +11,18 @@ import AddPost from "../post/AddPost";
 import AddBio from "../bio/AddBio";
 
 function App() {
-  const [interests, setInterests] = useState([]);
+   const [interests, setInterests] = useState([]);
   const [users, setUsers] = useState([]);
-  const connectedUser = useLocation();
+  const [connectedUser, setConnectedUser] = useState(localStorage.getItem("connectedUser"));
+ 
 
   useEffect(() => {
     loadInterests();
     loadUsers();
     console.log(interests);
-    console.log("welcome" + connectedUser);
-  }, []);
-
+    console.log('welcome' + connectedUser);
+  }, [connectedUser]);
+  
   function loadInterests() {
     fetch("/interests")
       .then((res) => res.json())
@@ -41,11 +42,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route
-          exact
-          path="/"
-          element={<LoginForm users={users} setUsers={setUsers} />}
-        />
+        <Route exact path="/" element={<LoginForm users={users} setUsers={setUsers} setConnectedUser={setConnectedUser} />} />
         <Route exact path="/addpost" element={<AddPost />} />
         <Route exact path="/addbio" element={<AddBio />} />
         <Route
@@ -62,7 +59,7 @@ function App() {
           path="/feed/:idGroup"
           element={
             <>
-              <NavBar /> <GroupFeed interests={interests} users={users} />
+              <NavBar /> <GroupFeed interests={interests} setInterests={setInterests} users={users} connectedUser={connectedUser} />
             </>
           }
         />
