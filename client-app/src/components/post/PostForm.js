@@ -1,8 +1,8 @@
 import { Form, Button, Image } from "semantic-ui-react";
 
 const PostForm = ({
-  subject,
-  setSubject,
+  title,
+  setTitle,
   selectedImage,
   caption,
   setCaption,
@@ -16,11 +16,11 @@ const PostForm = ({
     <Form onSubmit={handleSumbit}>
       <Form.Input
         width={4}
-        label="Subject"
+        label="Title"
         type="text"
-        placeholder="Enter post subject..."
-        value={subject}
-        onChange={(e) => setSubject(e.target.value)}
+        placeholder="Enter post title..."
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <Form.Input accept="image/*" type="file" onChange={imageChange} />
       {selectedImage && (
