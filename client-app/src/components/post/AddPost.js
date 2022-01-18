@@ -1,63 +1,92 @@
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Form, Button, Container, Card, Image, Icon } from "semantic-ui-react";
+import { Button, Container, Card, Image, Icon } from "semantic-ui-react";
+import PostForm from "./PostForm";
 
-function AddPost() {
+const AddPost = () => {
   const firstRender = useRef(true);
 
-  const [subject, setSubject] = useState("");
+  const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [currentPostId, setCurrentPostId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imgData, setImgData] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [posts, setPosts] = useState([]);
 
   const clearInputPost = () => {
-    setSubject("");
+    setTitle("");
     setCaption("");
+    setSelectedImage(null);
   };
 
-  const addPost = () => {
-    setPosts([
-      ...posts,
-      {
-        postSubject: subject,
-        postCaption: caption,
-        postImage: selectedImage,
-        id: uuidv4(),
-      },
-    ]);
-    clearInputPost();
+  // const imageChange = (e) => {
+  //   setSelectedImage(e.target.files[0]);
+  //   console.log(e.target.files[0]);
+  // };
+
+  const removeSelectedImage = () => {
+    setSelectedImage(null);
   };
+
+  const imageChange = (e) => {
+    if (e.target.files[0]) {
+      console.log("picture: ", e.target.files);
+      setSelectedImage(e.target.files[0]);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImgData(reader.result);
+      });
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+  // const addPost = () => {
+  //   setPosts([
+  //     ...posts,
+  //     {
+  //       postSubject: subject,
+  //       postCaption: caption,
+  //       postImage: selectedImage,
+  //       id: uuidv4(),
+  //     },
+  //   ]);
+  //   clearInputPost();
+  // };
 
   const editPost = (post) => {
-    setSubject(post.postSubject);
-    setCaption(post.postCaption);
-    setSelectedImage(post.postImage);
+    setIsEditOpen(true);
+    setTitle(post.title);
+    setCaption(post.caption);
     setCurrentPostId(post.id);
     console.log(post);
   };
 
-  const updatePost = () => {
-    setPosts([
-      ...posts.filter((x) => x.id !== currentPostId),
-      {
-        postSubject: subject,
-        postCaption: caption,
-        postImage: selectedImage,
-        id: currentPostId,
-      },
-    ]);
-  };
+  // const updatePostOld = () => {
+  //   setPosts([
+  //     ...posts.filter((x) => x.id !== currentPostId),
+  //     {
+  //       title: title,
+  //       caption: caption,
+  //       id: currentPostId,
+  //     },
+  //   ]);
+  // };
 
   const handleSumbit = (e) => {
     e.preventDefault();
     clearInputPost();
     setCurrentPostId(null);
-    !currentPostId ? addPost() : updatePost(currentPostId);
+    !currentPostId ? postToServer() : updatePost(currentPostId);
   };
 
-  const removePost = (id) => {
-    setPosts(posts.filter((post) => post.id !== id));
+  // const removePostOld = (id) => {
+  //   setPosts(posts.filter((post) => post.id !== id));
+  // };
+
+  const cancelEdit = () => {
+    clearInputPost();
+    setCurrentPostId(null);
   };
 
   useEffect(() => {
@@ -69,54 +98,105 @@ function AddPost() {
   }, [posts]);
 
   useEffect(() => {
-    if (localStorage.getItem("Post") !== null) {
-      const newPosts = localStorage.getItem("Post");
-      setPosts(JSON.parse([...posts, newPosts]));
-    }
+    loadPosts();
   }, []);
+
+  const postToServer = () => {
+    fetch("/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        id: uuidv4(),
+        idUser: "user1",
+        idGroup: "group1",
+        image: imgData,
+        title: title,
+        caption: caption,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        // setPosts([...posts, result]);
+        setPosts([
+          ...posts,
+          {
+            title: result.title,
+            caption: result.caption,
+            image: imgData,
+            id: result.id,
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.log("Error adding post.", error);
+      });
+  };
+
+  const loadPosts = () => {
+    fetch("/posts")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+      })
+      .catch((error) => console.log("Error fetching posts", error));
+  };
+
+  const updatePost = () => {
+    fetch(`/posts/${currentPostId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        title: title,
+        caption: caption,
+        image: imgData,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        setPosts([...posts.filter((x) => x.id !== currentPostId), result]);
+      })
+      .catch((error) => {
+        console.log("Post not found", error);
+      });
+  };
+
+  const removePost = (id) => {
+    fetch(`/posts/${id}`, { method: "DELETE" })
+      .then((res) => res.json())
+      .then((result) => {
+        setPosts(result);
+      })
+      .catch((error) => {
+        console.log("Post not found", error);
+      });
+  };
 
   return (
     <Container>
-      <Form onSubmit={handleSumbit}>
-        <Form.Input
-          width={4}
-          label="Subject"
-          type="text"
-          placeholder="Enter post subject..."
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-        />
-        <Form.Input
-          width={4}
-          label="Image"
-          type="file"
-          onChange={(e) => setSelectedImage(e.target.files[0])}
-        />
-        <Button>Upload</Button>
-        <Form.TextArea
-          rows={5}
-          width={6}
-          label="Caption"
-          type="text"
-          placeholder="Enter caption..."
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-        />
-        <Button positive type="submit">
-          {currentPostId !== null ? "Update" : "Post"}
-        </Button>
-      </Form>
+      <PostForm
+        title={title}
+        setTitle={setTitle}
+        selectedImage={selectedImage}
+        setSelectedImage={setSelectedImage}
+        caption={caption}
+        setCaption={setCaption}
+        handleSumbit={handleSumbit}
+        imageChange={imageChange}
+        removeSelectedImage={removeSelectedImage}
+        cancelEdit={cancelEdit}
+        isEditOpen={isEditOpen}
+        setIsEditOpen={setIsEditOpen}
+      />
       {posts.map((post) => (
         <Card key={post.id}>
           <Card.Content>
-            <Card.Header>{post.postSubject}</Card.Header>
-            <Image>{post.postImage}</Image>
-            <Card.Description>{post.postCaption}</Card.Description>
+            <Card.Header>{post.title}</Card.Header>
+            <Image src={imgData}></Image>
+            <Card.Description>{post.caption}</Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <a>
-              <Icon name="user" />
-            </a>
+            {/* <a> */}
+            <Icon name="user" />
+            {/* </a> */}
           </Card.Content>
           <Button.Group>
             <Button negative onClick={() => removePost(post.id)}>
@@ -128,6 +208,6 @@ function AddPost() {
       ))}
     </Container>
   );
-}
+};
 
 export default AddPost;
