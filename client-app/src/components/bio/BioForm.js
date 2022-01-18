@@ -1,23 +1,35 @@
-import { Form, Button, Container } from "semantic-ui-react";
+import { Form, Button, Container, Image } from "semantic-ui-react";
 
 function BioForm({
-  name,
-  setName,
+  displayName,
+  setDisplayName,
   aboutMe,
   setAboutMe,
+  bioImage,
+  removeSelectedImage,
+  imageChange,
   currentBioId,
   handleSumbit,
 }) {
   return (
     <Container>
       <Form onSubmit={handleSumbit}>
+        <Form.Input accept="image/*" type="file" onChange={imageChange} />
+        {bioImage && (
+          <div>
+            <Image src={URL.createObjectURL(bioImage)} size="small" />
+            <Button negative onClick={removeSelectedImage}>
+              Remove image
+            </Button>
+          </div>
+        )}
         <Form.Input
           required
           label="Name"
           type="text"
           placeholder="My name is..."
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
         />
         <Form.TextArea
           required
