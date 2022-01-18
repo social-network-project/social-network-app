@@ -11,8 +11,7 @@ export default function SignoutBtn(props) {
   };
   return (
     <>
-      {" "}
-      <Button></Button>{" "}
+      <Button></Button>
     </>
   );
 }
