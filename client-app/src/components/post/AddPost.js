@@ -10,21 +10,35 @@ const AddPost = () => {
   const [caption, setCaption] = useState("");
   const [currentPostId, setCurrentPostId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imgData, setImgData] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [posts, setPosts] = useState([]);
 
   const clearInputPost = () => {
     setTitle("");
     setCaption("");
+    setSelectedImage(null);
   };
 
-  const imageChange = (e) => {
-    setSelectedImage(e.target.files[0]);
-    console.log(e.target.files[0]);
-  };
+  // const imageChange = (e) => {
+  //   setSelectedImage(e.target.files[0]);
+  //   console.log(e.target.files[0]);
+  // };
 
   const removeSelectedImage = () => {
     setSelectedImage(null);
+  };
+
+  const imageChange = (e) => {
+    if (e.target.files[0]) {
+      console.log("picture: ", e.target.files);
+      setSelectedImage(e.target.files[0]);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImgData(reader.result);
+      });
+      reader.readAsDataURL(e.target.files[0]);
+    }
   };
 
   // const addPost = () => {
@@ -44,7 +58,6 @@ const AddPost = () => {
     setIsEditOpen(true);
     setTitle(post.title);
     setCaption(post.caption);
-    setSelectedImage(post.image);
     setCurrentPostId(post.id);
     console.log(post);
   };
@@ -95,7 +108,7 @@ const AddPost = () => {
         id: uuidv4(),
         idUser: "user1",
         idGroup: "group1",
-        image: "/images/interests/posts/post1-artistic.jpg",
+        image: imgData,
         title: title,
         caption: caption,
       }),
@@ -108,6 +121,7 @@ const AddPost = () => {
           {
             title: result.title,
             caption: result.caption,
+            image: imgData,
             id: result.id,
           },
         ]);
@@ -132,6 +146,7 @@ const AddPost = () => {
       body: JSON.stringify({
         title: title,
         caption: caption,
+        image: imgData,
       }),
     })
       .then((res) => res.json())
@@ -175,13 +190,13 @@ const AddPost = () => {
         <Card key={post.id}>
           <Card.Content>
             <Card.Header>{post.title}</Card.Header>
-            <Image>{post.image}</Image>
+            <Image src={imgData}></Image>
             <Card.Description>{post.caption}</Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <a>
-              <Icon name="user" />
-            </a>
+            {/* <a> */}
+            <Icon name="user" />
+            {/* </a> */}
           </Card.Content>
           <Button.Group>
             <Button negative onClick={() => removePost(post.id)}>
