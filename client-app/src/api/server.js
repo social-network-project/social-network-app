@@ -26,6 +26,13 @@ createServer({
         userImage: "https://react.semantic-ui.com/images/wireframe/square-image.png",
         bio:"",
       });
+      server.create("user", {
+        id: "user3",
+        username: "sigridur-unique-name",
+        displayName: "sigridur",
+        email: "omakligt@gmail.com",
+        password: "Magnusson13",
+      });
       //interests
       server.create("interest", {
         id: 'group1',

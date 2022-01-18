@@ -1,0 +1,33 @@
+.toggle {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: black;
+  padding: 0.3rem;
+  font-size: 2.4rem;
+}
+
+.sidebar {
+  height: 100vh;
+  background-color: white;
+  position: fixed;
+  z-index: 200;
+  left: -100%;
+  animation: slide-open 1s forwards;
+}
+
+.sidebar.close {
+  left: 0;
+  animation: slide-close 1s forwards;
+}
+
+@keyframes slide-open {
+  100% {
+    left: 0;
+  }
+}
+@keyframes slide-close {
+  100% {
+    left: -100%;
+  }
+}

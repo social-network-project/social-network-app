@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes, useLocation, useParams  } from "react-router-dom";
+import { Route, Routes, useLocation, useParams } from "react-router-dom";
 import LoginForm from "../LoginForm";
-import NavBar from "./NavBar";
+import NavBar from "../layout/Navbar/NavBar";
 import GroupDashboard from "../groups/dashboard/GroupDashboard";
 import GroupFeed from "../groups/feed/GroupFeed";
 import Profile from "../user/Profile";
+import Settings from "../layout/other-pages/Settings";
+import NotFound from "../layout/other-pages/NotFound";
+import AddPost from "../post/AddPost";
+import AddBio from "../bio/AddBio";
 
 function App() {
-  const [interests, setInterests] = useState([]);
+   const [interests, setInterests] = useState([]);
   const [users, setUsers] = useState([]);
   const [connectedUser, setConnectedUser] = useState(localStorage.getItem("connectedUser"));
  
@@ -18,7 +22,7 @@ function App() {
     console.log(interests);
     console.log('welcome' + connectedUser);
   }, [connectedUser]);
-
+  
   function loadInterests() {
     fetch("/interests")
       .then((res) => res.json())
@@ -31,14 +35,16 @@ function App() {
     fetch("/users")
       .then((res) => res.json())
       .then((data) => {
-        setUsers(data);        
+        setUsers(data);
       })
-      .catch((error) => console.log("Error fetching users", error));   
+      .catch((error) => console.log("Error fetching users", error));
   }
   return (
     <>
       <Routes>
         <Route exact path="/" element={<LoginForm users={users} setUsers={setUsers} setConnectedUser={setConnectedUser} />} />
+        <Route exact path="/addpost" element={<AddPost />} />
+        <Route exact path="/addbio" element={<AddBio />} />
         <Route
           exact
           path="/groups/:idUser"
@@ -62,7 +68,26 @@ function App() {
           path="/profile/:idUser"
           element={
             <>
-              <NavBar /> <Profile  />
+              <NavBar /> <Profile />
+            </>
+          }
+        />
+        <Route
+          exact
+          path="/settings/:idUser"
+          element={
+            <>
+              <NavBar /> <Settings />
+            </>
+          }
+        />
+        <Route
+          path="*"
+          exact
+          element={
+            <>
+              <NavBar />
+              <NotFound />
             </>
           }
         />
