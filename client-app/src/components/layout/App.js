@@ -9,8 +9,7 @@ import Profile from "../user/Profile";
 function App() {
   const [interests, setInterests] = useState([]);
   const [users, setUsers] = useState([]);
-  //const connectedUser = useLocation();
-  const [connectedUser, setConnectedUser] = useState("");
+  const [connectedUser, setConnectedUser] = useState(localStorage.getItem("connectedUser"));
  
 
   useEffect(() => {

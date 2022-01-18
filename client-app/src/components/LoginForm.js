@@ -36,6 +36,7 @@ export default function LoginForm({users, setUsers, setConnectedUser}) {
         if (userPasswordCorrect.length > 0) {
           setWrongPassword(false);
           setConnectedUser(userPasswordCorrect[0].id);
+          localStorage.setItem('connectedUser', userPasswordCorrect[0].id);
           navigate(`/groups/${userPasswordCorrect[0].id}`);
         } else {
           setWrongPassword(true);

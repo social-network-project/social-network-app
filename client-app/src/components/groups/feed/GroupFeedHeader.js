@@ -8,7 +8,7 @@ export default function GroupFeedHeader({
   users,
   connectedUser,
   interests,
-  setInterests
+  setInterests,
 }) {
   const [joinEnabled, setJoinEnabled] = useState(true);
 
@@ -22,18 +22,30 @@ export default function GroupFeedHeader({
   };
 
   function enableJoin() {
-    if (selectedInterest.users.find((u) => u === connectedUser))
-      setJoinEnabled(false);
-    else setJoinEnabled(true);
+    console.log(connectedUser)  
+    if (selectedInterest.users.find((u) => u === connectedUser)){
+        setJoinEnabled(false);
+        console.log("setEnableJoin to false");
+    }
+      
+    else {
+        setJoinEnabled(true);
+        console.log("setEnableJoin to false");
+    } 
   }
   useEffect(() => {
+    console.log("called useEffect groupfeedHeader")  
     enableJoin();
-  }, []);
+    
+  }, [selectedInterest]);
 
   function joinGroup() {
     selectedInterest.users = [...selectedInterest.users, connectedUser];
     setSelectedInterest(selectedInterest);
-    setInterests([...interests.filter(x => x.id !== selectedInterest.id), selectedInterest])
+    setInterests([
+      ...interests.filter((x) => x.id !== selectedInterest.id),
+      selectedInterest,
+    ]);
     setJoinEnabled(false);
     submitChangesToAPI();
   }
@@ -43,7 +55,10 @@ export default function GroupFeedHeader({
       ...selectedInterest.users.filter((x) => x !== connectedUser),
     ];
     setSelectedInterest(selectedInterest);
-    setInterests([...interests.filter(x => x.id !== selectedInterest.id), selectedInterest])
+    setInterests([
+      ...interests.filter((x) => x.id !== selectedInterest.id),
+      selectedInterest,
+    ]);
     setJoinEnabled(true);
     submitChangesToAPI();
   }
@@ -63,56 +78,60 @@ export default function GroupFeedHeader({
       });
   }
   return (
-    <Segment.Group>
-      <Segment basic attached="top" style={{ padding: "0" }}>
-        <Image
-          src={`/images/interests/wallpaper/${selectedInterest.image}`}
-          fluid
-          style={{ filter: "brightness(50%)", height: "350px" }}
-        />
-        <Segment style={activityImageTextStyle} basic>
-          <Item.Group>
-            <Item>
-              <Item.Content>
-                <Header
-                  size="huge"
-                  content={selectedInterest.title}
-                  style={{ color: "white" }}
-                />
-                <p> {selectedInterest.description}</p>
-                <p>Created : {selectedInterest.date}</p>
-                <Icon name="user" />
-                {selectedInterest.users.length} Members
-              </Item.Content>
-            </Item>
-            <Item>
-              <Image.Group size="mini">
-                {users.map(
-                  (user) =>
-                    selectedInterest.users.find((x) => x === user.id) && (
-                      <Link key={user.id} to={`/profile/${user.id}`}>
-                        <Image src={user.userImage} avatar />
-                      </Link>
-                    )
-                )}
-              </Image.Group>
-            </Item>
-          </Item.Group>
-          <Item.Group style={{ width: "90%" }} attached="bottom">
-            <Button
-              color="red"
-              floated="right"
-              onClick={joinGroup}
-              disabled={!joinEnabled}
-            >
-              Join Interest
-            </Button>
-            <Button floated="right" onClick={leaveGroup} disabled={joinEnabled}>
-              Leave Interest
-            </Button>
-          </Item.Group>
-        </Segment>
-      </Segment>
-    </Segment.Group>
+        <Segment.Group>
+          <Segment basic attached="top" style={{ padding: "0" }}>
+            <Image
+              src={`/images/interests/wallpaper/${selectedInterest.image}`}
+              fluid
+              style={{ filter: "brightness(50%)", height: "350px" }}
+            />
+            <Segment style={activityImageTextStyle} basic>
+              <Item.Group>
+                <Item>
+                  <Item.Content>
+                    <Header
+                      size="huge"
+                      content={selectedInterest.title}
+                      style={{ color: "white" }}
+                    />
+                    <p> {selectedInterest.description}</p>
+                    <p>Created : {selectedInterest.date}</p>
+                    <Icon name="user" />
+                    {selectedInterest.users.length} Members
+                  </Item.Content>
+                </Item>
+                <Item>
+                  <Image.Group size="mini">
+                    {users.map(
+                      (user) =>
+                        selectedInterest.users.find((x) => x === user.id) && (
+                          <Link key={user.id} to={`/profile/${user.id}`}>
+                            <Image src={user.userImage} avatar />
+                          </Link>
+                        )
+                    )}
+                  </Image.Group>
+                </Item>
+              </Item.Group>
+              <Item.Group style={{ width: "90%" }} attached="bottom">
+                <Button
+                  color="red"
+                  floated="right"
+                  onClick={joinGroup}
+                  disabled={!joinEnabled}
+                >
+                  Join Interest
+                </Button>
+                <Button
+                  floated="right"
+                  onClick={leaveGroup}
+                  disabled={joinEnabled}
+                >
+                  Leave Interest
+                </Button>
+              </Item.Group>
+            </Segment>
+          </Segment>
+        </Segment.Group>
   );
 }

@@ -142,5 +142,9 @@ createServer({
       let id = request.params.idGroup;
       return schema.db.posts.where({idGroup : id});
     });
+    this.put("/:id", (schema, request) => {
+      let newAttrs = JSON.parse(request.requestBody);
+      return schema.db.posts.update(request.params.id, newAttrs);
+    });
   },
 });

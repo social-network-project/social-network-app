@@ -22,8 +22,8 @@ export default function GroupFeedList({
   const [likes, setLikes] = useState(0);
 
   useEffect(() => {
-    loadPosts();
-  }, []);
+     loadPosts();
+  }, [selectedInterest]);
   function loadPosts() {
     fetch(`/posts/${selectedInterest.id}`)
       .then((res) => res.json())
@@ -43,12 +43,30 @@ export default function GroupFeedList({
     currentPost.comments.push(newComment);
     let objIndex = posts.findIndex((a) => a.id === idPost);
     posts[objIndex] = currentPost;
+
+    updateAPI(idPost, currentPost.comments);
     setPosts(posts);
     setComment("");
   }
+
+  function updateAPI(id, comments) {
+    fetch(`/posts/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        comments: comments,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log("Post not found", error);
+      });
+  }
   return (
     <>
-      {selectedInterest.users.find((x) => x === connectedUser) && (
+      {selectedInterest && selectedInterest.users.find((x) => x === connectedUser) && (
         <>
           <Segment
             textAlign="center"
