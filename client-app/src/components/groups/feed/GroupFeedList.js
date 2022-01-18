@@ -10,6 +10,7 @@ import {
   Comment,
   Button,
 } from "semantic-ui-react";
+import { v4 as uuid } from "uuid";
 
 export default function GroupFeedList({
   selectedInterest,
@@ -17,6 +18,7 @@ export default function GroupFeedList({
   users,
 }) {
   const [posts, setPosts] = useState([]);
+  const [comment, setComment] = useState("");
   const [likes, setLikes] = useState(0);
 
   useEffect(() => {
@@ -30,7 +32,20 @@ export default function GroupFeedList({
       })
       .catch((error) => console.log("Error fetching posts", error));
   }
-
+  function addComment(e, idPost) {
+    e.preventDefault();
+    let newComment = {
+      id: uuid(),
+      userId: connectedUser,
+      comment: comment,
+    };
+    let currentPost = posts.find((x) => x.id === idPost);
+    currentPost.comments.push(newComment);
+    let objIndex = posts.findIndex((a) => a.id === idPost);
+    posts[objIndex] = currentPost;
+    setPosts(posts);
+    setComment("");
+  }
   return (
     <>
       {selectedInterest.users.find((x) => x === connectedUser) && (
@@ -76,11 +91,11 @@ export default function GroupFeedList({
                         content: post.likes,
                       }}
                     />
-                    {post.comments.map((comments) => (
-                      <Comment key={comments.id}>
+                    {post.comments.map((cmt) => (
+                      <Comment key={cmt.id}>
                         {users.map(
                           (user) =>
-                            user.id === comments.userId && (
+                            user.id === cmt.userId && (
                               <div key={user.id}>
                                 <Comment.Avatar src={user.userImage} />
                                 <Comment.Content>
@@ -96,13 +111,17 @@ export default function GroupFeedList({
                             )
                         )}
                         <Comment.Text style={{ marginLeft: "3.5em" }}>
-                          {comments.comment}
+                          {cmt.comment}
                         </Comment.Text>
                       </Comment>
                     ))}
                     <Form reply>
-                      <Form.TextArea />
+                      <Form.TextArea
+                        onChange={(e) => setComment(e.target.value)}
+                        value={comment}
+                      />
                       <Button
+                        onClick={(e) => addComment(e, post.id)}
                         content="Add Comment"
                         labelPosition="left"
                         icon="edit"

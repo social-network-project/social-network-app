@@ -1,5 +1,4 @@
 import { createServer, Model } from "miragejs";
-import { v4 as uuid } from "uuid";
 
 createServer({
   models: {
@@ -96,7 +95,7 @@ createServer({
         caption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
         likes: 2,
         tags : "",
-        comments : [{id:"comment1", userId:"user1", comment:"comment 4test"}, {id:"comment2",userId:"user2", comment:"comment 5test"}] 
+        comments : [{id:"comment3", userId:"user1", comment:"comment 4test"}, {id:"comment4",userId:"user2", comment:"comment 5test"}] 
       })
   },
   routes() {
