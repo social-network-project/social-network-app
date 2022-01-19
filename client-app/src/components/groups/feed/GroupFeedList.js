@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {
   Segment,
-  Grid,
-  Icon,
   Image,
   Form,
   Header,
@@ -16,14 +14,16 @@ export default function GroupFeedList({
   selectedInterest,
   connectedUserId,
   users,
+  posts,
+  setPosts,
 }) {
-  const [posts, setPosts] = useState([]);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState({});
   const [likes, setLikes] = useState(0);
 
   useEffect(() => {
-     loadPosts();
+    loadPosts();
   }, [selectedInterest]);
+
   function loadPosts() {
     fetch(`/posts/${selectedInterest.id}`)
       .then((res) => res.json())
@@ -37,7 +37,7 @@ export default function GroupFeedList({
     let newComment = {
       id: uuid(),
       userId: connectedUserId,
-      comment: comment,
+      comment: comment[idPost],
     };
     let currentPost = posts.find((x) => x.id === idPost);
     currentPost.comments.push(newComment);
@@ -46,7 +46,7 @@ export default function GroupFeedList({
 
     updateAPI(idPost, currentPost.comments);
     setPosts(posts);
-    setComment("");
+    setComment({ ...comment, [idPost]: "" });
   }
 
   function updateAPI(id, comments) {
@@ -64,33 +64,48 @@ export default function GroupFeedList({
         console.log("Post not found", error);
       });
   }
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  function onChange(e){
+    const name = e.target.name;
+    let value = e.target.value;
+    setComment({ ...comment, [name]: value });
+  }
   return (
     <>
-      {selectedInterest && selectedInterest.users.find((x) => x === connectedUserId) && (
-        <>
-          <Segment
-            textAlign="center"
-            attached="top"
-            inverted
-            color="black"
-            style={{ border: "none" }}
-          >
-            <Header>
-              {posts.length > 0
-                ? "Posts recently published"
-                : "No posts recently published"}
-            </Header>
-          </Segment>
-          <Segment attached>
-            <Comment.Group>
+      {selectedInterest &&
+        selectedInterest.users.find((x) => x === connectedUserId) && (
+          <>
+            <Segment
+              textAlign="center"
+              attached="top"
+              inverted
+              color="black"
+              style={{ border: "none" }}
+            >
+              <Header>
+                {posts.length > 0
+                  ? "Posts recently published"
+                  : "No posts recently published"}
+              </Header>
+            </Segment>
+            <Segment
+              attached
+              centered="true"
+              style={{ boxShadow: "none", border: "none" }}
+            >
               {posts &&
                 posts.map((post) => (
-                  <Segment key={post.id}>
+                  <Segment key={post.id} style={{ width: "60%" }}>
                     <Header>
-                      {post.title} by{" "}
+                      {capitalizeFirstLetter(post.title)} by{" "}
                       <strong>
                         {users.find((x) => x.id === post.idUser)
-                          ? users.find((x) => x.id === post.idUser).displayName
+                          ? capitalizeFirstLetter(
+                              users.find((x) => x.id === post.idUser)
+                                .displayName
+                            )
                           : "Unknown"}
                       </strong>
                     </Header>
@@ -109,34 +124,37 @@ export default function GroupFeedList({
                         content: post.likes,
                       }}
                     />
-                    {post.comments.map((cmt) => (
-                      <Comment key={cmt.id}>
-                        {users.map(
-                          (user) =>
-                            user.id === cmt.userId && (
-                              <div key={user.id}>
-                                <Comment.Avatar src={user.userImage} />
-                                <Comment.Content>
-                                  <Comment.Author
-                                    as={NavLink}
-                                    to={`/profile/${user.id}`}
-                                    style={{ marginLeft: "1em" }}
-                                  >
-                                    {user.displayName}
-                                  </Comment.Author>
-                                </Comment.Content>
-                              </div>
-                            )
-                        )}
-                        <Comment.Text style={{ marginLeft: "3.5em" }}>
-                          {cmt.comment}
-                        </Comment.Text>
-                      </Comment>
-                    ))}
+                    <Comment.Group>
+                      {post.comments.map((cmt) => (
+                        <Comment key={cmt.id}>
+                          {users.map(
+                            (user) =>
+                              user.id === cmt.userId && (
+                                <div key={user.id}>
+                                  <Comment.Avatar src={user.userImage} />
+                                  <Comment.Content>
+                                    <Comment.Author
+                                      as={NavLink}
+                                      to={`/profile/${user.id}`}
+                                      style={{ marginLeft: "1em" }}
+                                    >
+                                      {capitalizeFirstLetter(user.displayName)}
+                                    </Comment.Author>
+                                  </Comment.Content>
+                                </div>
+                              )
+                          )}
+                          <Comment.Text style={{ marginLeft: "3.5em" }}>
+                            {cmt.comment}
+                          </Comment.Text>
+                        </Comment>
+                      ))}
+                    </Comment.Group>
                     <Form reply>
                       <Form.TextArea
-                        onChange={(e) => setComment(e.target.value)}
-                        value={comment}
+                        name={post.id}
+                        onChange={(e) => onChange(e)}
+                        value={comment[post.id]}
                       />
                       <Button
                         onClick={(e) => addComment(e, post.id)}
@@ -148,10 +166,9 @@ export default function GroupFeedList({
                     </Form>
                   </Segment>
                 ))}
-            </Comment.Group>
-          </Segment>
-        </>
-      )}
+            </Segment>
+          </>
+        )}
     </>
   );
 }

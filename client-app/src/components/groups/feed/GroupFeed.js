@@ -12,6 +12,7 @@ export default function GroupFeed({
   connectedUserId,
 }) {
   const params = useParams();
+  const [posts, setPosts] = useState([]);
   const [selectedInterest, setSelectedInterest] = useState({});
 
   useEffect(() => {
@@ -43,11 +44,13 @@ export default function GroupFeed({
             interests={interests}
             setInterests={setInterests}
           />
-          <GroupFeedNew />
+          <GroupFeedNew selectedInterest={selectedInterest} posts = {posts} setPosts = {setPosts} connectedUserId={connectedUserId} />
           <GroupFeedList
             selectedInterest={selectedInterest}
             connectedUserId={connectedUserId}
             users={users}
+            posts = {posts}
+            setPosts = {setPosts}
           />
         </Container>
       )}

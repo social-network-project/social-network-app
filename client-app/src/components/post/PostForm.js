@@ -1,4 +1,4 @@
-import { Form, Button, Image } from "semantic-ui-react";
+import { Form, Button, Image, Icon, Segment } from "semantic-ui-react";
 
 const PostForm = ({
   title,
@@ -14,42 +14,64 @@ const PostForm = ({
 }) => {
   return (
     <Form onSubmit={handleSumbit}>
-      <Form.Input
-        width={4}
-        label="Title"
-        type="text"
-        placeholder="Enter post title..."
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <Form.Input
-        width={4}
-        label="Image"
-        accept="image/*"
-        type="file"
-        onChange={imageChange}
-      />
+      <Form.Group>
+        <Form.Input
+          required
+          size="small"
+          width={4}
+          label="Title"
+          type="text"
+          placeholder="Enter post title..."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <Form.Input
+          required
+          size="small"
+          width={5}
+          label="Image"
+          accept="image/*"
+          type="file"
+          onChange={imageChange}
+          //value={!selectedImage ? "" : selectedImage}
+        />
+        <Form.TextArea
+          required
+          rows={4}
+          width={7}
+          label="Caption"
+          type="text"
+          placeholder="Enter caption..."
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+        />
+      </Form.Group>
       {selectedImage && (
-        <div>
-          <Image src={URL.createObjectURL(selectedImage)} size="small" />
-          <Button negative onClick={removeSelectedImage}>
-            Remove image
+        <Segment>
+          <Button
+            negative
+            onClick={removeSelectedImage}
+            floated="right"
+            size="mini"
+          >
+            <Icon name="delete" style={{ margin: "0px" }} />
           </Button>
-        </div>
+          <Image
+            src={URL.createObjectURL(selectedImage)}
+            size="medium"
+            centered
+            rounded
+          />
+        </Segment>
       )}
-      <Form.TextArea
-        rows={5}
-        width={6}
-        label="Caption"
-        type="text"
-        placeholder="Enter caption..."
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-      />
-      <Button positive type="submit">
-        {/* {currentPostId === null ? "Update" : "Post"} not working*/}
-        Post
-      </Button>
+      <Segment textAlign="right" style={{ boxShadow:"none" ,border:"none" }}>
+        <Button positive type="submit" >
+          <Icon name="world" />
+          {/* {currentPostId === null ? "Update" : "Post"} not working*/}
+          New Post
+        </Button>
+      </Segment>
+
       {isEditOpen && (
         <Button negative onClick={() => cancelEdit()}>
           Cancel Edit
