@@ -1,5 +1,5 @@
 // import { Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ToggleBtn from "./ToggleBtn";
 import SidebarMenu from "./SidebarMenu";
 import { Menu } from "semantic-ui-react";
@@ -25,13 +25,6 @@ export default function NavBar({ children }) {
     isOpen = <SidebarMenu close={sidebarCloseHandler} sidebar={"sidebar"} />;
   }
 
-  useEffect(() => {
-    document.addEventListener("mousedown", (event) => {
-      if (!event.target) {
-        setSidebar(false);
-      }
-    });
-  });
   return (
     <>
       <Menu>

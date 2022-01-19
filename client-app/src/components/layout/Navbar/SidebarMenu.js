@@ -22,6 +22,7 @@ export default function SidebarMenu(props) {
       props.close();
     }, 1000);
   };
+
   return (
     <div className={sidebarClass}>
       <>
