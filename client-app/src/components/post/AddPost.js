@@ -57,7 +57,6 @@ const AddPost = () => {
   };
 
   const cancelEdit = () => {
-    clearInputPost();
     setCurrentPostId(null);
   };
 
