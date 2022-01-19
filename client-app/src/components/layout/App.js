@@ -112,7 +112,6 @@ function App() {
               <AddBio
                 users={users}
                 setUsers={setUsers}
-                loadUserById={loadUserById}
                 connectedUser={connectedUser}
                 setConnectedUser={setConnectedUser}
               />

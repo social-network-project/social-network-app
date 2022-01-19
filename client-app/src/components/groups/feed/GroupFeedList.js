@@ -112,7 +112,6 @@ export default function GroupFeedList({
                     <p>{post.caption}</p>
                     <Image src={post.image} size="medium" centered rounded />
                     <Button
-                      //onClick={setLikes(post.likes +1)}
                       floated="right"
                       color="red"
                       content="Like"

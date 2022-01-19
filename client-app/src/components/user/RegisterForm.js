@@ -37,6 +37,7 @@ export default function RegisterForm({ handleClose, show, users, setUsers }) {
         displayName: displayName,
         email: email,
         password: password,
+        userImage: "/images/user.png"
       }),
     })
       .then((res) => res.json())

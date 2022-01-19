@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Button, Container, Card, Icon, Segment, Image } from "semantic-ui-react";
 import BioForm from "./BioForm";
 
-function AddBio({ connectedUser, setConnectedUser }) {
+function AddBio({ users, setUsers, connectedUser, setConnectedUser }) {
   const [displayName, setDisplayName] = useState("");
   const [aboutMe, setAboutMe] = useState("");
   const [bioImage, setBioImage] = useState(null);
@@ -76,10 +76,13 @@ function AddBio({ connectedUser, setConnectedUser }) {
       }),
     })
       .then((res) => res.json())
-      .then((result) => {
-        console.log(result);
-        setBioInfo(result);
-        setConnectedUser(result);
+      .then((updatedUser) => {
+        console.log(updatedUser);
+        setBioInfo(updatedUser);
+        setConnectedUser(updatedUser);
+        let index = users.findIndex(x => x.id === updatedUser.id);
+        users[index] = updatedUser;
+        setUsers(users);
       })
       .catch((error) => {
         console.log("Error adding profile info.", error);
