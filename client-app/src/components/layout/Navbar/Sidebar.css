@@ -9,9 +9,12 @@
 
 .sidebar {
   height: 100vh;
+  padding: 8px 4px 0 8px;
   background-color: white;
+  border: 1px solid #dededf;
   position: fixed;
   z-index: 200;
+  top: -1px;
   left: -100%;
   animation: slide-open 1s forwards;
 }
@@ -30,4 +33,26 @@
   100% {
     left: -100%;
   }
+}
+
+.links:link {
+  color: black;
+  border: none;
+}
+
+.links:hover {
+  color: red;
+}
+
+.usericon {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.usericon__txt {
+  margin: 0 0.5rem 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
