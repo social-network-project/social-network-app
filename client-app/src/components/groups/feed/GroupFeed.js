@@ -9,7 +9,7 @@ export default function GroupFeed({
   interests,
   setInterests,
   users,
-  connectedUser,
+  connectedUserId,
 }) {
   const params = useParams();
   const [selectedInterest, setSelectedInterest] = useState({});
@@ -39,14 +39,14 @@ export default function GroupFeed({
             selectedInterest={selectedInterest}
             setSelectedInterest={setSelectedInterest}
             users={users}
-            connectedUser={connectedUser}
+            connectedUserId={connectedUserId}
             interests={interests}
             setInterests={setInterests}
           />
           <GroupFeedNew />
           <GroupFeedList
             selectedInterest={selectedInterest}
-            connectedUser={connectedUser}
+            connectedUserId={connectedUserId}
             users={users}
           />
         </Container>

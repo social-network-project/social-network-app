@@ -6,7 +6,7 @@ export default function GroupFeedHeader({
   selectedInterest,
   setSelectedInterest,
   users,
-  connectedUser,
+  connectedUserId,
   interests,
   setInterests,
 }) {
@@ -22,8 +22,8 @@ export default function GroupFeedHeader({
   };
 
   function enableJoin() {
-    console.log(connectedUser)  
-    if (selectedInterest.users.find((u) => u === connectedUser)){
+    console.log(connectedUserId)  
+    if (selectedInterest.users.find((u) => u === connectedUserId)){
         setJoinEnabled(false);
         console.log("setEnableJoin to false");
     }
@@ -40,7 +40,7 @@ export default function GroupFeedHeader({
   }, [selectedInterest]);
 
   function joinGroup() {
-    selectedInterest.users = [...selectedInterest.users, connectedUser];
+    selectedInterest.users = [...selectedInterest.users, connectedUserId];
     setSelectedInterest(selectedInterest);
     setInterests([
       ...interests.filter((x) => x.id !== selectedInterest.id),
@@ -52,7 +52,7 @@ export default function GroupFeedHeader({
 
   function leaveGroup() {
     selectedInterest.users = [
-      ...selectedInterest.users.filter((x) => x !== connectedUser),
+      ...selectedInterest.users.filter((x) => x !== connectedUserId),
     ];
     setSelectedInterest(selectedInterest);
     setInterests([
