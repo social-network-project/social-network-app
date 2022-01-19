@@ -63,7 +63,7 @@ export default function GroupFeedNew({selectedInterest, posts, setPosts, connect
       body: JSON.stringify({
         id: uuid(),
         idUser: connectedUserId,
-        idGroup: selectedInterest,
+        idGroup: selectedInterest.id,
         image: imgData,
         title: title,
         caption: caption,

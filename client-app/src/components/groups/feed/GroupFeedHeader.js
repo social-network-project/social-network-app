@@ -22,19 +22,14 @@ export default function GroupFeedHeader({
   };
 
   function enableJoin() {
-    console.log(connectedUserId)  
     if (selectedInterest.users.find((u) => u === connectedUserId)){
         setJoinEnabled(false);
-        console.log("setEnableJoin to false");
     }
-      
     else {
         setJoinEnabled(true);
-        console.log("setEnableJoin to false");
     } 
   }
   useEffect(() => {
-    console.log("called useEffect groupfeedHeader")  
     enableJoin();
     
   }, [selectedInterest]);
