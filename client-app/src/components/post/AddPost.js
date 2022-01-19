@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Button, Container, Card, Image, Icon } from "semantic-ui-react";
 import PostForm from "./PostForm";
 
-const AddPost = ({posts, setPosts}) => {
-  const firstRender = useRef(true);
+const AddPost = ({posts, setPosts, connectedUserId}) => {
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [currentPostId, setCurrentPostId] = useState(null);
