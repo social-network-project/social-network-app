@@ -5,7 +5,7 @@ import SidebarMenu from "./SidebarMenu";
 import { Menu } from "semantic-ui-react";
 import HeaderLogo from "./HeaderLogo";
 
-export default function NavBar({ children }) {
+export default function NavBar({ connectedUser }) {
   const [sidebar, setSidebar] = useState(false);
 
   const openHandler = () => {
@@ -22,7 +22,7 @@ export default function NavBar({ children }) {
 
   let isOpen;
   if (sidebar) {
-    isOpen = <SidebarMenu close={sidebarCloseHandler} sidebar={"sidebar"} />;
+    isOpen = <SidebarMenu close={sidebarCloseHandler} sidebar={"sidebar"} connectedUser={connectedUser} />;
   }
   return (
     <>
