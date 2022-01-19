@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import LoginForm from "../LoginForm";
 import NavBar from "../layout/Navbar/NavBar";
 import GroupDashboard from "../groups/dashboard/GroupDashboard";
 import GroupFeed from "../groups/feed/GroupFeed";
-import Profile from "../user/Profile";
 import Settings from "../layout/other-pages/Settings";
 import NotFound from "../layout/other-pages/NotFound";
 import AddPost from "../post/AddPost";
@@ -14,7 +13,7 @@ function App() {
   const [interests, setInterests] = useState([]);
   const [users, setUsers] = useState([]);
   const [connectedUserId, setConnectedUserId] = useState(
-    localStorage.getItem("connectedUser")
+    localStorage.getItem("connectedUser"),
   );
   const [connectedUser, setConnectedUser] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -99,7 +98,7 @@ function App() {
                 posts={posts}
                 setPosts={setPosts}
                 selectedInterest={selectedInterest}
-                setSelectedInterest= {setSelectedInterest}
+                setSelectedInterest={setSelectedInterest}
               />
             </>
           }

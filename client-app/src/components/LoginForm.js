@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Segment,
@@ -11,7 +11,7 @@ import {
 import RegisterForm from "./user/RegisterForm";
 import { useNavigate } from "react-router";
 
-export default function LoginForm({users, setUsers, setConnectedUserId}) {
+export default function LoginForm({ users, setUsers, setConnectedUserId }) {
   const [show, setModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +21,6 @@ export default function LoginForm({users, setUsers, setConnectedUserId}) {
 
   const navigate = useNavigate();
 
-
   function getConnectedUser() {
     setWrongUserAdress(false);
     setWrongPassword(false);
@@ -30,13 +29,13 @@ export default function LoginForm({users, setUsers, setConnectedUserId}) {
       if (emailExist.length > 0) {
         setWrongUserAdress(false);
         let userPasswordCorrect = emailExist.filter(
-          (x) => x.password === password
+          (x) => x.password === password,
         );
         // if user email and password exist
         if (userPasswordCorrect.length > 0) {
           setWrongPassword(false);
           setConnectedUserId(userPasswordCorrect[0].id);
-          localStorage.setItem('connectedUser', userPasswordCorrect[0].id);
+          localStorage.setItem("connectedUser", userPasswordCorrect[0].id);
           navigate(`/groups/${userPasswordCorrect[0].id}`);
         } else {
           setWrongPassword(true);

@@ -1,21 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import { v4 as uuidv4 } from "uuid";
 import { Button, Container, Card, Icon, Image } from "semantic-ui-react";
 import BioForm from "./BioForm";
 
-function AddBio({
-  users,
-  setUsers,
-  loadUserById,
-  connectedUser,
-  setConnectedUser,
-}) {
+function AddBio({ connectedUser, setConnectedUser }) {
   const [displayName, setDisplayName] = useState("");
   const [aboutMe, setAboutMe] = useState("");
   const [bioImage, setBioImage] = useState(null);
   const [bioImgData, setBioImgData] = useState(null);
   const [currentBioId, setCurrentBioId] = useState("");
+  // const [userCanEdit, setUserCanEdit] = useState(false);
   const [bioEditOpen, setBioEditOpen] = useState(false);
   const [bioInfo, setBioInfo] = useState([]);
   const params = useParams();
@@ -24,7 +18,7 @@ function AddBio({
     console.log("UseEffect");
     console.log(connectedUser);
     loadBio();
-  }, []);
+  }, [connectedUser]);
 
   const imageChange = (e) => {
     if (e.target.files[0]) {
@@ -43,6 +37,10 @@ function AddBio({
     setBioImgData(null);
   };
 
+  // if (connectedUser === params.idUser) {
+  //   setUserCanEdit(true);
+  // }
+
   const editBio = (connectedUser) => {
     setBioEditOpen((bioEditOpen) => !bioEditOpen);
     setDisplayName(displayName);
@@ -56,8 +54,8 @@ function AddBio({
   };
 
   const loadBio = () => {
-    if (connectedUser.id !== params.idUser) {
-      fetch(`/users/${connectedUser.id}`)
+    if (connectedUser !== params.idUser) {
+      fetch(`/users/${connectedUser}`)
         .then((res) => res.json())
         .then((data) => {
           setBioInfo(data);
@@ -67,7 +65,7 @@ function AddBio({
   };
 
   const bioToServer = () => {
-    fetch(`/users/${connectedUser.id}`, {
+    fetch(`/users/${connectedUser}`, {
       method: "PUT",
       body: JSON.stringify({
         userImage: bioImgData,
@@ -90,17 +88,17 @@ function AddBio({
     <Container>
       {connectedUser && (
         <Card>
-          <Image size="small" rounded centered src={bioImgData} />
+          <Image src={bioImgData} size="medium" bordered />
           <Card.Content>
             <Card.Header>
               <Icon name="user" />
               {displayName}
             </Card.Header>
             <Card.Description>{aboutMe}</Card.Description>
-            <Button onClick={() => editBio()}>
-              <Icon name="pen square" />
-            </Button>
           </Card.Content>
+          <Button onClick={() => editBio()}>
+            <Icon name="pen square" /> Edit profile
+          </Button>
         </Card>
       )}
       {/* <button onClick={() => removeBio(bio.id)}>Delete</button> */}
