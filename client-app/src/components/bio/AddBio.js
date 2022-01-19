@@ -56,20 +56,18 @@ function AddBio({
   };
 
   const loadBio = () => {
-    if (connectedUser.id !== params.idUser){
+    if (connectedUser.id !== params.idUser) {
       fetch(`/users/${connectedUser.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setBioInfo(data);
-      })
-      .catch((error) => console.log("Error fetching profile", error));
-    }
-    else setBioInfo(connectedUser);
-    
+        .then((res) => res.json())
+        .then((data) => {
+          setBioInfo(data);
+        })
+        .catch((error) => console.log("Error fetching profile", error));
+    } else setBioInfo(connectedUser);
   };
 
   const bioToServer = () => {
-      fetch(`/users/${connectedUser.id}`, {
+    fetch(`/users/${connectedUser.id}`, {
       method: "PUT",
       body: JSON.stringify({
         userImage: bioImgData,
@@ -92,9 +90,6 @@ function AddBio({
     <Container>
       {connectedUser && (
         <Card>
-          <Button onClick={() => editBio()}>
-            <Icon name="pen square" />
-          </Button>
           <Image size="small" rounded centered src={bioImgData} />
           <Card.Content>
             <Card.Header>
@@ -102,6 +97,9 @@ function AddBio({
               {displayName}
             </Card.Header>
             <Card.Description>{aboutMe}</Card.Description>
+            <Button onClick={() => editBio()}>
+              <Icon name="pen square" />
+            </Button>
           </Card.Content>
         </Card>
       )}
