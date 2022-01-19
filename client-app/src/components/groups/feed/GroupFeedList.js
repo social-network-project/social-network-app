@@ -14,7 +14,7 @@ import { v4 as uuid } from "uuid";
 
 export default function GroupFeedList({
   selectedInterest,
-  connectedUser,
+  connectedUserId,
   users,
 }) {
   const [posts, setPosts] = useState([]);
@@ -36,7 +36,7 @@ export default function GroupFeedList({
     e.preventDefault();
     let newComment = {
       id: uuid(),
-      userId: connectedUser,
+      userId: connectedUserId,
       comment: comment,
     };
     let currentPost = posts.find((x) => x.id === idPost);
@@ -66,7 +66,7 @@ export default function GroupFeedList({
   }
   return (
     <>
-      {selectedInterest && selectedInterest.users.find((x) => x === connectedUser) && (
+      {selectedInterest && selectedInterest.users.find((x) => x === connectedUserId) && (
         <>
           <Segment
             textAlign="center"
