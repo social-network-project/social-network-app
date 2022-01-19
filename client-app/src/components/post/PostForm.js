@@ -22,7 +22,13 @@ const PostForm = ({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-      <Form.Input accept="image/*" type="file" onChange={imageChange} />
+      <Form.Input
+        width={4}
+        label="Image"
+        accept="image/*"
+        type="file"
+        onChange={imageChange}
+      />
       {selectedImage && (
         <div>
           <Image src={URL.createObjectURL(selectedImage)} size="small" />
