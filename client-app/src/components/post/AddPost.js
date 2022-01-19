@@ -1,11 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button, Container, Card, Image, Icon } from "semantic-ui-react";
 import PostForm from "./PostForm";
 
 const AddPost = (connectedUserId) => {
-  // const firstRender = useRef(true);
-
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [currentPostId, setCurrentPostId] = useState(null);
@@ -18,11 +16,6 @@ const AddPost = (connectedUserId) => {
     setTitle("");
     setCaption("");
   };
-
-  // const imageChange = (e) => {
-  //   setSelectedImage(e.target.files[0]);
-  //   console.log(e.target.files[0]);
-  // };
 
   const removeSelectedImage = () => {
     setSelectedImage(null);
@@ -59,14 +52,6 @@ const AddPost = (connectedUserId) => {
   const cancelEdit = () => {
     setCurrentPostId(null);
   };
-
-  // useEffect(() => {
-  //   if (firstRender.current) {
-  //     firstRender.current = false;
-  //   } else {
-  //     localStorage.setItem("Post", JSON.stringify([...posts]));
-  //   }
-  // }, [posts]);
 
   useEffect(() => {
     loadPosts();
@@ -150,7 +135,6 @@ const AddPost = (connectedUserId) => {
         title={title}
         setTitle={setTitle}
         selectedImage={selectedImage}
-        setSelectedImage={setSelectedImage}
         caption={caption}
         setCaption={setCaption}
         handleSumbit={handleSumbit}
@@ -158,7 +142,6 @@ const AddPost = (connectedUserId) => {
         removeSelectedImage={removeSelectedImage}
         cancelEdit={cancelEdit}
         isEditOpen={isEditOpen}
-        setIsEditOpen={setIsEditOpen}
       />
       {posts.map((post) => (
         <Card key={post.id}>
