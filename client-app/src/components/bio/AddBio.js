@@ -3,8 +3,14 @@ import { v4 as uuidv4 } from "uuid";
 import { Button, Container, Card, Icon, Image } from "semantic-ui-react";
 import BioForm from "./BioForm";
 
-function AddBio() {
-  const firstRender = useRef(true);
+function AddBio(
+  users,
+  setUsers,
+  connectedUserId,
+  setConnectedUserId,
+  loadUserById,
+) {
+  // const firstRender = useRef(true);
 
   const [displayName, setDisplayName] = useState("");
   const [aboutMe, setAboutMe] = useState("");
@@ -77,28 +83,32 @@ function AddBio() {
   //   setBioInfo(bioInfo.filter((bio) => bio.id !== id));
   // };
 
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-    } else {
-      localStorage.setItem("Bio", JSON.stringify([...bioInfo]));
-    }
-  }, [bioInfo]);
+  // useEffect(() => {
+  //   if (firstRender.current) {
+  //     firstRender.current = false;
+  //   } else {
+  //     localStorage.setItem("Bio", JSON.stringify([...bioInfo]));
+  //   }
+  // }, [bioInfo]);
 
-  useEffect(() => {
-    loadBio();
-  }, []);
+  // useEffect(() => {
+  //   loadBio();
+  // }, []);
 
   const bioToServer = () => {
-    fetch("/users", {
-      method: "POST",
-      body: JSON.stringify({
-        id: uuidv4(),
-        image: bioImgData,
-        displayName: displayName,
-        bio: aboutMe,
-      }),
-    })
+    loadUserById();
+    fetch(
+      { connectedUserId },
+      {
+        method: "POST",
+        body: JSON.stringify({
+          id: uuidv4(),
+          image: bioImgData,
+          displayName: displayName,
+          bio: aboutMe,
+        }),
+      },
+    )
       .then((res) => res.json())
       .then((result) => {
         setBioInfo([
@@ -107,7 +117,7 @@ function AddBio() {
             displayName: result.displayName,
             aboutMe: result.aboutMe,
             id: result.id,
-            userImage: bioImgData,
+            userImage: result.bioImgData,
           },
         ]);
       })
@@ -117,7 +127,8 @@ function AddBio() {
   };
 
   const loadBio = () => {
-    fetch("/users")
+    loadUserById();
+    fetch({ connectedUserId })
       .then((res) => res.json())
       .then((data) => {
         setBioInfo(data);
