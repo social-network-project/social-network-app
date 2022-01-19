@@ -14,9 +14,11 @@ function App() {
   const [interests, setInterests] = useState([]);
   const [users, setUsers] = useState([]);
   const [connectedUserId, setConnectedUserId] = useState(
-    localStorage.getItem("connectedUser"),
+    localStorage.getItem("connectedUser")
   );
   const [connectedUser, setConnectedUser] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [selectedInterest, setSelectedInterest] = useState({});
 
   useEffect(() => {
     loadInterests();
@@ -94,6 +96,10 @@ function App() {
                 setInterests={setInterests}
                 users={users}
                 connectedUserId={connectedUserId}
+                posts={posts}
+                setPosts={setPosts}
+                selectedInterest={selectedInterest}
+                setSelectedInterest= {setSelectedInterest}
               />
             </>
           }
