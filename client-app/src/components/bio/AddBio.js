@@ -62,7 +62,7 @@ function AddBio({ connectedUser, setConnectedUser }) {
 
   const loadBio = () => {
     if (connectedUser !== params.idUser) {
-      fetch(`/users/${connectedUser}`)
+      fetch(`/users/${connectedUser.id}`)
         .then((res) => res.json())
         .then((data) => {
           setBioInfo(data);
@@ -72,7 +72,7 @@ function AddBio({ connectedUser, setConnectedUser }) {
   };
 
   const bioToServer = () => {
-    fetch(`/users/${connectedUser}`, {
+    fetch(`/users/${connectedUser.id}`, {
       method: "PUT",
       body: JSON.stringify({
         userImage: bioImgData,
