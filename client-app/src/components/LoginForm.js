@@ -11,7 +11,7 @@ import {
 import RegisterForm from "./user/RegisterForm";
 import { useNavigate } from "react-router";
 
-export default function LoginForm({users, setUsers, setConnectedUser}) {
+export default function LoginForm({users, setUsers, setConnectedUserId}) {
   const [show, setModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +35,7 @@ export default function LoginForm({users, setUsers, setConnectedUser}) {
         // if user email and password exist
         if (userPasswordCorrect.length > 0) {
           setWrongPassword(false);
-          setConnectedUser(userPasswordCorrect[0].id);
+          setConnectedUserId(userPasswordCorrect[0].id);
           localStorage.setItem('connectedUser', userPasswordCorrect[0].id);
           navigate(`/groups/${userPasswordCorrect[0].id}`);
         } else {

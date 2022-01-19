@@ -30,10 +30,10 @@ export default function SidebarMenu(props) {
         </button>
       </>
 
-      <UserIcon />
+      <UserIcon connectedUser={props.connectedUser} />
       <Menu vertical>
         <MenuItem>
-          <Link to="/groups/:idUser">Home</Link>
+          <Link to={`/groups/${localStorage.getItem("connectedUser")}`}>Home</Link>
         </MenuItem>
         <Dropdown text="Create New" pointing="left" className="link item">
           <DropdownMenu>

@@ -13,15 +13,17 @@ import AddBio from "../bio/AddBio";
 function App() {
    const [interests, setInterests] = useState([]);
   const [users, setUsers] = useState([]);
-  const [connectedUser, setConnectedUser] = useState(localStorage.getItem("connectedUser"));
+  const [connectedUserId, setConnectedUserId] = useState(localStorage.getItem("connectedUser"));
+  const [connectedUser, setConnectedUser] = useState(null);
  
 
   useEffect(() => {
     loadInterests();
     loadUsers();
+    loadUserById();
     console.log(interests);
-    console.log('welcome' + connectedUser);
-  }, [connectedUser]);
+    console.log('welcome' + connectedUserId);
+  }, [connectedUserId]);
   
   function loadInterests() {
     fetch("/interests")
@@ -39,10 +41,22 @@ function App() {
       })
       .catch((error) => console.log("Error fetching users", error));
   }
+  function loadUserById() {
+    if (connectedUserId){
+      fetch(`/users/${connectedUserId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setConnectedUser(data);
+        console.log("connected user object");
+        console.log(data);
+      })
+      .catch((error) => console.log("Error fetching user", error));
+    }
+  }
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<LoginForm users={users} setUsers={setUsers} setConnectedUser={setConnectedUser} />} />
+        <Route exact path="/" element={<LoginForm users={users} setUsers={setUsers} setConnectedUserId={setConnectedUserId} />} />
         <Route exact path="/addpost" element={<AddPost />} />
         <Route exact path="/addbio" element={<AddBio />} />
         <Route
@@ -50,7 +64,7 @@ function App() {
           path="/groups/:idUser"
           element={
             <>
-              <NavBar /> <GroupDashboard interests={interests} />
+              <NavBar connectedUser={connectedUser} /> <GroupDashboard interests={interests} />
             </>
           }
         />
@@ -59,7 +73,7 @@ function App() {
           path="/feed/:idGroup"
           element={
             <>
-              <NavBar /> <GroupFeed interests={interests} setInterests={setInterests} users={users} connectedUser={connectedUser} />
+              <NavBar connectedUser={connectedUser}  /> <GroupFeed interests={interests} setInterests={setInterests} users={users} connectedUserId={connectedUserId} />
             </>
           }
         />
@@ -68,7 +82,7 @@ function App() {
           path="/profile/:idUser"
           element={
             <>
-              <NavBar /> <Profile />
+              <NavBar connectedUser={connectedUser} /> <Profile />
             </>
           }
         />
@@ -77,7 +91,7 @@ function App() {
           path="/settings/:idUser"
           element={
             <>
-              <NavBar /> <Settings />
+              <NavBar connectedUser={connectedUser} /> <Settings />
             </>
           }
         />
@@ -86,7 +100,7 @@ function App() {
           exact
           element={
             <>
-              <NavBar />
+              <NavBar connectedUser={connectedUser} />
               <NotFound />
             </>
           }
