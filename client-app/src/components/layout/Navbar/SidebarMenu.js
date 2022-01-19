@@ -35,7 +35,7 @@ export default function SidebarMenu(props) {
     setSidebarClass("sidebar close");
     setTimeout(() => {
       props.close();
-    }, 1000);
+    }, 100);
   };
 
   return (

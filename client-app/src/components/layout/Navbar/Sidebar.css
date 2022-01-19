@@ -16,7 +16,7 @@
   z-index: 200;
   top: -1px;
   left: -100%;
-  animation: slide-open 1s forwards;
+  animation: slide-open 0.8s forwards;
 }
 
 .sidebar.close {
