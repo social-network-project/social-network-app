@@ -5,10 +5,10 @@ function BioForm({
   setDisplayName,
   aboutMe,
   setAboutMe,
+  currentBioId,
   bioImage,
   removeSelectedImage,
   imageChange,
-  currentBioId,
   handleSumbit,
 }) {
   return (
