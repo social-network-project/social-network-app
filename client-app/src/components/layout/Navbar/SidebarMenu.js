@@ -46,7 +46,9 @@ export default function SidebarMenu(props) {
         </Dropdown>
 
         <MenuItem>
-          <Link to="/settings/:id">Settings</Link>
+          <Link to={`/settings/${localStorage.getItem("connectedUser")}`}>
+            Settings
+          </Link>
         </MenuItem>
         <MenuItem>
           {/* <SignoutBtn></SignoutBtn> */}
