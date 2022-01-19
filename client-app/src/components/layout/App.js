@@ -11,20 +11,21 @@ import AddPost from "../post/AddPost";
 import AddBio from "../bio/AddBio";
 
 function App() {
-   const [interests, setInterests] = useState([]);
+  const [interests, setInterests] = useState([]);
   const [users, setUsers] = useState([]);
-  const [connectedUserId, setConnectedUserId] = useState(localStorage.getItem("connectedUser"));
+  const [connectedUserId, setConnectedUserId] = useState(
+    localStorage.getItem("connectedUser"),
+  );
   const [connectedUser, setConnectedUser] = useState(null);
- 
 
   useEffect(() => {
     loadInterests();
     loadUsers();
     loadUserById();
     console.log(interests);
-    console.log('welcome' + connectedUserId);
+    console.log("welcome" + connectedUserId);
   }, [connectedUserId]);
-  
+
   function loadInterests() {
     fetch("/interests")
       .then((res) => res.json())
@@ -42,29 +43,58 @@ function App() {
       .catch((error) => console.log("Error fetching users", error));
   }
   function loadUserById() {
-    if (connectedUserId){
+    if (connectedUserId) {
       fetch(`/users/${connectedUserId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setConnectedUser(data);
-        console.log("connected user object");
-        console.log(data);
-      })
-      .catch((error) => console.log("Error fetching user", error));
+        .then((res) => res.json())
+        .then((data) => {
+          setConnectedUser(data);
+          console.log("connected user object");
+          console.log(data);
+        })
+        .catch((error) => console.log("Error fetching user", error));
     }
   }
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<LoginForm users={users} setUsers={setUsers} setConnectedUserId={setConnectedUserId} />} />
-        <Route exact path="/addpost" element={<AddPost />} />
-        <Route exact path="/addbio" element={<AddBio />} />
+        <Route
+          exact
+          path="/"
+          element={
+            <LoginForm
+              users={users}
+              setUsers={setUsers}
+              setConnectedUserId={setConnectedUserId}
+            />
+          }
+        />
+        <Route
+          exact
+          path="/addpost"
+          element={<AddPost connectedUserId={connectedUserId} />}
+        />
+        {/* <Route
+          exact
+          path="/addbio"
+          element={
+            <AddBio
+              users={users}
+              setUsers={setUsers}
+              connectedUserId={connectedUserId}
+              setConnectedUserId={setConnectedUserId}
+              loadUserById={loadUserById}
+              connectedUser={connectedUser}
+              setConnectedUser={setConnectedUser}
+            />
+          }
+        /> */}
         <Route
           exact
           path="/groups/:idUser"
           element={
             <>
-              <NavBar connectedUser={connectedUser} /> <GroupDashboard interests={interests} />
+              <NavBar connectedUser={connectedUser} />{" "}
+              <GroupDashboard interests={interests} />
             </>
           }
         />
@@ -73,7 +103,13 @@ function App() {
           path="/feed/:idGroup"
           element={
             <>
-              <NavBar connectedUser={connectedUser}  /> <GroupFeed interests={interests} setInterests={setInterests} users={users} connectedUserId={connectedUserId} />
+              <NavBar connectedUser={connectedUser} />{" "}
+              <GroupFeed
+                interests={interests}
+                setInterests={setInterests}
+                users={users}
+                connectedUserId={connectedUserId}
+              />
             </>
           }
         />
@@ -82,7 +118,14 @@ function App() {
           path="/profile/:idUser"
           element={
             <>
-              <NavBar connectedUser={connectedUser} /> <Profile />
+              <NavBar connectedUser={connectedUser} />{" "}
+              <AddBio
+                users={users}
+                setUsers={setUsers}
+                loadUserById={loadUserById}
+                connectedUser={connectedUser}
+                setConnectedUser={setConnectedUser}
+              />
             </>
           }
         />
