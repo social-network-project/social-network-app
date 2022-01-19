@@ -15,6 +15,12 @@ export default function UserIcon({ connectedUser }) {
             target="_blank"
             className="circular"
             src={connectedUser.userImage}
+            style={{
+              width: "90px",
+              heigth: "90px",
+              borderRadius: "50%",
+              margin: "2px 2px 4px 2px",
+            }}
           ></Image>
           <div className="usericon__txt">
             <p>

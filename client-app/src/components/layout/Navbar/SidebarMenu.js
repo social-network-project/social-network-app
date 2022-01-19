@@ -9,7 +9,6 @@ import {
 } from "semantic-ui-react";
 import UserIcon from "../../UserComponents/UserIcon";
 import * as FaIcons from "react-icons/fa";
-// import SignoutBtn from "../Navbar/SignoutBtn";
 import "./Sidebar.css";
 
 export default function SidebarMenu(props) {
@@ -62,7 +61,6 @@ export default function SidebarMenu(props) {
         <Link to={`/settings/${localStorage.getItem("connectedUser")}`}>
           <MenuItem as="a">Settings</MenuItem>
         </Link>
-        {/* <SignoutBtn></SignoutBtn> */}
         <Link to="/">
           <MenuItem as="a">Sign Out</MenuItem>
         </Link>
