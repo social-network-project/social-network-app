@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 // import { v4 as uuidv4 } from "uuid";
 import { Button, Container, Card, Icon, Image } from "semantic-ui-react";
 import BioForm from "./BioForm";
@@ -17,6 +18,7 @@ function AddBio({
   const [currentBioId, setCurrentBioId] = useState("");
   const [bioEditOpen, setBioEditOpen] = useState(false);
   const [bioInfo, setBioInfo] = useState([]);
+  const params = useParams();
 
   useEffect(() => {
     console.log("UseEffect");
@@ -54,16 +56,18 @@ function AddBio({
   };
 
   const loadBio = () => {
-    fetch(`/users/${connectedUser}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setBioInfo(data);
-      })
-      .catch((error) => console.log("Error fetching profile", error));
+    if (connectedUser.id !== params.idUser) {
+      fetch(`/users/${connectedUser.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setBioInfo(data);
+        })
+        .catch((error) => console.log("Error fetching profile", error));
+    } else setBioInfo(connectedUser);
   };
 
   const bioToServer = () => {
-    fetch(`/users/${connectedUser}`, {
+    fetch(`/users/${connectedUser.id}`, {
       method: "PUT",
       body: JSON.stringify({
         userImage: bioImgData,
@@ -73,12 +77,9 @@ function AddBio({
     })
       .then((res) => res.json())
       .then((result) => {
-        // setBioInfo(result);
-        setBioInfo({
-          displayName: result.displayName,
-          bio: result.aboutMe,
-          image: result.bioImgData,
-        });
+        console.log(result);
+        setBioInfo(result);
+        setConnectedUser(result);
       })
       .catch((error) => {
         console.log("Error adding profile info.", error);
@@ -89,9 +90,6 @@ function AddBio({
     <Container>
       {connectedUser && (
         <Card>
-          <Button onClick={() => editBio()}>
-            <Icon name="pen square" />
-          </Button>
           <Image size="small" rounded centered src={bioImgData} />
           <Card.Content>
             <Card.Header>
@@ -99,6 +97,9 @@ function AddBio({
               {displayName}
             </Card.Header>
             <Card.Description>{aboutMe}</Card.Description>
+            <Button onClick={() => editBio()}>
+              <Icon name="pen square" />
+            </Button>
           </Card.Content>
         </Card>
       )}
