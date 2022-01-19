@@ -14,18 +14,16 @@ createServer({
       displayName: "asmaa",
       email: "test",
       password: "123",
-      userImage:
-        "https://react.semantic-ui.com/images/wireframe/square-image.png",
+      userImage: "/images/user.png",
       bio: "",
     });
     server.create("user", {
       id: "user2",
-      username: "unique-name",
-      displayName: "test",
+      username: "therese-unique-name",
+      displayName: "therese",
       email: "test@gmail.com",
       password: "123",
-      userImage:
-        "https://react.semantic-ui.com/images/wireframe/square-image.png",
+      userImage: "/images/user.png",
       bio: "",
     });
     server.create("user", {
@@ -34,8 +32,7 @@ createServer({
       displayName: "sigridur",
       email: "omakligt@gmail.com",
       password: "Magnusson13",
-      userImage:
-        "https://react.semantic-ui.com/images/wireframe/square-image.png",
+      userImage: "/images/user.png",
       bio: "",
     });
     //interests
@@ -45,7 +42,7 @@ createServer({
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       image: "artistic.jpg",
-      users: ["user1", "user2"],
+      users: ["user1", "user2", "user3"],
       date: "10/01/2022",
     });
     server.create("interest", {
@@ -98,14 +95,15 @@ createServer({
       idUser: "user1",
       idGroup: "group1",
       image: "/images/interests/posts/post1-artistic.jpg",
-      title: "post title1",
+      title: "One of my last paintings",
       caption:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.sit amet, consectetur adipiscing elit, sed do eiu",
       likes: 1,
       tags: "",
       comments: [
-        { id: "comment1", userId: "user2", comment: "comment test" },
-        { id: "comment2", userId: "user1", comment: "comment2 test" },
+        { id: "comment1", userId: "user2", comment: "How artistic!" },
+        { id: "comment2", userId: "user1", comment: "Thanks so much !" },
+        { id: "comment3", userId: "user3", comment: "Great !" },
       ],
     });
     server.create("post", {
@@ -113,14 +111,14 @@ createServer({
       idUser: "user2",
       idGroup: "group1",
       image: "/images/interests/posts/post2-artistic.jpg",
-      title: "post title2",
+      title: "Painting",
       caption:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempsit amet, consectetur adipiscing elit, sed do eiusit amet, consectetur adipiscing elit, sed do eiuor incididunt ut labore.",
       likes: 2,
       tags: "",
       comments: [
-        { id: "comment3", userId: "user1", comment: "comment 4test" },
-        { id: "comment4", userId: "user2", comment: "comment 5test" },
+        { id: "comment4", userId: "user1", comment: "Good job !" },
+        { id: "comment5", userId: "user3", comment: "Awesome !" },
       ],
     });
   },
