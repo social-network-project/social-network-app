@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Button, Container, Card, Icon, Image } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Card,
+  Icon,
+  Image,
+  Segment,
+} from "semantic-ui-react";
 import BioForm from "./BioForm";
 
 function AddBio({ connectedUser, setConnectedUser }) {
