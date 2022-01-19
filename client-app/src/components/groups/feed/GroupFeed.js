@@ -9,23 +9,24 @@ export default function GroupFeed({
   interests,
   setInterests,
   users,
-  connectedUser,
+  connectedUserId,
+  posts,
+  setPosts,
+  selectedInterest,
+  setSelectedInterest,
 }) {
   const params = useParams();
-  const [selectedInterest, setSelectedInterest] = useState({});
 
   useEffect(() => {
-    if (Object.keys(selectedInterest).length === 0) {
-      fetch(`/interests/${params.idGroup}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setSelectedInterest(data);
-        })
-        .catch((error) => console.log("Error fetching interests", error));
-    }
-  }, []);
+    fetch(`/interests/${params.idGroup}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setSelectedInterest(data);
+      })
+      .catch((error) => console.log("Error fetching interests", error));
+  }, [params.idGroup]);
 
-/*   function getInterestById(id) {
+  /*   function getInterestById(id) {
     console.log("called getInterestById")  
     if (interests) return interests.find((x) => x.id === id);
     return null;
@@ -33,21 +34,28 @@ export default function GroupFeed({
  */
   return (
     <>
-      { Object.keys(selectedInterest).length > 0 && (
+      {Object.keys(selectedInterest).length > 0 && (
         <Container>
           <GroupFeedHeader
             selectedInterest={selectedInterest}
             setSelectedInterest={setSelectedInterest}
             users={users}
-            connectedUser={connectedUser}
+            connectedUserId={connectedUserId}
             interests={interests}
             setInterests={setInterests}
           />
-          <GroupFeedNew />
+          <GroupFeedNew
+            selectedInterest={selectedInterest}
+            posts={posts}
+            setPosts={setPosts}
+            connectedUserId={connectedUserId}
+          />
           <GroupFeedList
             selectedInterest={selectedInterest}
-            connectedUser={connectedUser}
+            connectedUserId={connectedUserId}
             users={users}
+            posts={posts}
+            setPosts={setPosts}
           />
         </Container>
       )}
