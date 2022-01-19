@@ -68,7 +68,11 @@ function App() {
             />
           }
         />
-        <Route exact path="/addpost" element={<AddPost />} />
+        <Route
+          exact
+          path="/addpost"
+          element={<AddPost connectedUserId={connectedUserId} />}
+        />
         <Route
           exact
           path="/addbio"

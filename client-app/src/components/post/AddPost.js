@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { Button, Container, Card, Image, Icon } from "semantic-ui-react";
 import PostForm from "./PostForm";
 
-const AddPost = () => {
-  const firstRender = useRef(true);
+const AddPost = (connectedUserId) => {
+  // const firstRender = useRef(true);
 
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
@@ -75,14 +75,17 @@ const AddPost = () => {
   const postToServer = () => {
     fetch("posts", {
       method: "POST",
-      body: JSON.stringify({
-        id: uuidv4(),
-        idUser: "user1",
-        idGroup: "group1",
-        image: imgData,
-        title: title,
-        caption: caption,
-      }),
+      body: JSON.stringify(
+        {
+          id: uuidv4(),
+          idUser: "user1",
+          idGroup: "group1",
+          image: imgData,
+          title: title,
+          caption: caption,
+        },
+        connectedUserId,
+      ),
     })
       .then((res) => res.json())
       .then((result) => {
@@ -93,6 +96,7 @@ const AddPost = () => {
             caption: result.caption,
             image: result.imgData,
             id: result.id,
+            idUser: connectedUserId,
           },
         ]);
       })

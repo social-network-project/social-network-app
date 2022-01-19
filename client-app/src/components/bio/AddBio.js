@@ -10,7 +10,7 @@ function AddBio(
   setConnectedUserId,
   loadUserById,
 ) {
-  // const firstRender = useRef(true);
+  const firstRender = useRef(true);
 
   const [displayName, setDisplayName] = useState("");
   const [aboutMe, setAboutMe] = useState("");
@@ -96,7 +96,6 @@ function AddBio(
   // }, []);
 
   const bioToServer = () => {
-    loadUserById();
     fetch(
       { connectedUserId },
       {
@@ -127,7 +126,6 @@ function AddBio(
   };
 
   const loadBio = () => {
-    loadUserById();
     fetch({ connectedUserId })
       .then((res) => res.json())
       .then((data) => {
@@ -153,10 +151,12 @@ function AddBio(
       .catch((error) => {
         console.log("Profile not found", error);
       });
+    setBioEditOpen(false);
   };
 
   return (
     <Container>
+      <button onClick={() => loadBio()}>X</button>
       {bioInfo.map((bio) => (
         <Card key={bio.id}>
           <Button onClick={() => editBio(bio)}>
