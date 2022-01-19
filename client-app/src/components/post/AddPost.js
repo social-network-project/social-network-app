@@ -17,7 +17,6 @@ const AddPost = () => {
   const clearInputPost = () => {
     setTitle("");
     setCaption("");
-    setSelectedImage(null);
   };
 
   // const imageChange = (e) => {
@@ -41,19 +40,6 @@ const AddPost = () => {
     }
   };
 
-  // const addPost = () => {
-  //   setPosts([
-  //     ...posts,
-  //     {
-  //       postSubject: subject,
-  //       postCaption: caption,
-  //       postImage: selectedImage,
-  //       id: uuidv4(),
-  //     },
-  //   ]);
-  //   clearInputPost();
-  // };
-
   const editPost = (post) => {
     setIsEditOpen(true);
     setTitle(post.title);
@@ -62,47 +48,33 @@ const AddPost = () => {
     console.log(post);
   };
 
-  // const updatePostOld = () => {
-  //   setPosts([
-  //     ...posts.filter((x) => x.id !== currentPostId),
-  //     {
-  //       title: title,
-  //       caption: caption,
-  //       id: currentPostId,
-  //     },
-  //   ]);
-  // };
-
   const handleSumbit = (e) => {
     e.preventDefault();
     clearInputPost();
+    setSelectedImage(null);
     setCurrentPostId(null);
     !currentPostId ? postToServer() : updatePost(currentPostId);
   };
-
-  // const removePostOld = (id) => {
-  //   setPosts(posts.filter((post) => post.id !== id));
-  // };
 
   const cancelEdit = () => {
     clearInputPost();
     setCurrentPostId(null);
   };
 
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-    } else {
-      localStorage.setItem("Post", JSON.stringify([...posts]));
-    }
-  }, [posts]);
+  // useEffect(() => {
+  //   if (firstRender.current) {
+  //     firstRender.current = false;
+  //   } else {
+  //     localStorage.setItem("Post", JSON.stringify([...posts]));
+  //   }
+  // }, [posts]);
 
   useEffect(() => {
     loadPosts();
   }, []);
 
   const postToServer = () => {
-    fetch("/posts", {
+    fetch("posts", {
       method: "POST",
       body: JSON.stringify({
         id: uuidv4(),
@@ -115,13 +87,12 @@ const AddPost = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        // setPosts([...posts, result]);
         setPosts([
           ...posts,
           {
             title: result.title,
             caption: result.caption,
-            image: imgData,
+            image: result.imgData,
             id: result.id,
           },
         ]);
