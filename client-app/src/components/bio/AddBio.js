@@ -94,7 +94,6 @@ function AddBio() {
       method: "POST",
       body: JSON.stringify({
         id: uuidv4(),
-        // idUser: "user1",
         image: bioImgData,
         displayName: displayName,
         bio: aboutMe,
