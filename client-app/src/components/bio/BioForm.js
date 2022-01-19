@@ -5,16 +5,22 @@ function BioForm({
   setDisplayName,
   aboutMe,
   setAboutMe,
+  currentBioId,
   bioImage,
   removeSelectedImage,
   imageChange,
-  currentBioId,
   handleSumbit,
 }) {
   return (
     <Container>
       <Form onSubmit={handleSumbit}>
-        <Form.Input accept="image/*" type="file" onChange={imageChange} />
+        <Form.Input
+          width={4}
+          label="Profile picture"
+          accept="image/*"
+          type="file"
+          onChange={imageChange}
+        />
         {bioImage && (
           <div>
             <Image src={URL.createObjectURL(bioImage)} size="small" />
@@ -24,7 +30,7 @@ function BioForm({
           </div>
         )}
         <Form.Input
-          required
+          width={4}
           label="Name"
           type="text"
           placeholder="My name is..."
@@ -32,8 +38,8 @@ function BioForm({
           onChange={(e) => setDisplayName(e.target.value)}
         />
         <Form.TextArea
-          required
-          rows={6}
+          width={4}
+          rows={8}
           label="About me"
           type="text"
           placeholder="About me..."

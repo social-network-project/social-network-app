@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button, Container, Card, Image, Icon } from "semantic-ui-react";
 import PostForm from "./PostForm";
 
 const AddPost = ({posts, setPosts}) => {
   const firstRender = useRef(true);
-
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [currentPostId, setCurrentPostId] = useState(null);
@@ -17,11 +16,6 @@ const AddPost = ({posts, setPosts}) => {
     setTitle("");
     setCaption("");
   };
-
-  // const imageChange = (e) => {
-  //   setSelectedImage(e.target.files[0]);
-  //   console.log(e.target.files[0]);
-  // };
 
   const removeSelectedImage = () => {
     setSelectedImage(null);
@@ -56,17 +50,8 @@ const AddPost = ({posts, setPosts}) => {
   };
 
   const cancelEdit = () => {
-    clearInputPost();
     setCurrentPostId(null);
   };
-
-  // useEffect(() => {
-  //   if (firstRender.current) {
-  //     firstRender.current = false;
-  //   } else {
-  //     localStorage.setItem("Post", JSON.stringify([...posts]));
-  //   }
-  // }, [posts]);
 
   useEffect(() => {
     loadPosts();
@@ -75,14 +60,17 @@ const AddPost = ({posts, setPosts}) => {
   const postToServer = () => {
     fetch("posts", {
       method: "POST",
-      body: JSON.stringify({
-        id: uuidv4(),
-        idUser: "user1",
-        idGroup: "group1",
-        image: imgData,
-        title: title,
-        caption: caption,
-      }),
+      body: JSON.stringify(
+        {
+          id: uuidv4(),
+          idUser: "user1",
+          idGroup: "group1",
+          image: imgData,
+          title: title,
+          caption: caption,
+        },
+        connectedUserId,
+      ),
     })
       .then((res) => res.json())
       .then((result) => {
@@ -93,6 +81,7 @@ const AddPost = ({posts, setPosts}) => {
             caption: result.caption,
             image: result.imgData,
             id: result.id,
+            idUser: connectedUserId,
           },
         ]);
       })
@@ -146,7 +135,6 @@ const AddPost = ({posts, setPosts}) => {
         title={title}
         setTitle={setTitle}
         selectedImage={selectedImage}
-        setSelectedImage={setSelectedImage}
         caption={caption}
         setCaption={setCaption}
         handleSumbit={handleSumbit}
@@ -154,7 +142,6 @@ const AddPost = ({posts, setPosts}) => {
         removeSelectedImage={removeSelectedImage}
         cancelEdit={cancelEdit}
         isEditOpen={isEditOpen}
-        setIsEditOpen={setIsEditOpen}
       />
       {posts.map((post) => (
         <Card key={post.id}>

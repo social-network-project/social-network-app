@@ -70,8 +70,11 @@ function App() {
             />
           }
         />
-        <Route exact path="/addpost" element={<AddPost />} />
-        <Route exact path="/addbio" element={<AddBio />} />
+        <Route
+          exact
+          path="/addpost"
+          element={<AddPost connectedUserId={connectedUserId} />}
+        />
         <Route
           exact
           path="/groups/:idUser"
@@ -106,7 +109,14 @@ function App() {
           path="/profile/:idUser"
           element={
             <>
-              <NavBar connectedUser={connectedUser} /> <Profile />
+              <NavBar connectedUser={connectedUser} />{" "}
+              <AddBio
+                users={users}
+                setUsers={setUsers}
+                loadUserById={loadUserById}
+                connectedUser={connectedUser}
+                setConnectedUser={setConnectedUser}
+              />
             </>
           }
         />

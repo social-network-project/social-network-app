@@ -7,8 +7,8 @@ const PostForm = ({
   caption,
   setCaption,
   handleSumbit,
-  removeSelectedImage,
   imageChange,
+  removeSelectedImage,
   cancelEdit,
   isEditOpen,
 }) => {
