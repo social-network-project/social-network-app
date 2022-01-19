@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Menu,
@@ -15,15 +15,31 @@ import "./Sidebar.css";
 export default function SidebarMenu(props) {
   const [sidebarClass, setSidebarClass] = useState(props.sidebar);
 
+  const menuRef = useRef();
+
+  useEffect(() => {
+    const isClickedOutside = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        e.preventDefault();
+        props.close();
+      }
+    };
+    document.addEventListener("click", sidebarCloseHandler);
+    return () => {
+      document.removeEventListener("click", sidebarCloseHandler);
+    };
+  }, []);
+
   const sidebarCloseHandler = (e) => {
     e.preventDefault();
     setSidebarClass("sidebar close");
     setTimeout(() => {
       props.close();
-    }, 1000);
+    }, 100);
   };
+
   return (
-    <div className={sidebarClass}>
+    <div className={sidebarClass} ref={menuRef}>
       <>
         <button className="toggle" onClick={sidebarCloseHandler}>
           <FaIcons.FaTimes />
@@ -31,10 +47,11 @@ export default function SidebarMenu(props) {
       </>
 
       <UserIcon connectedUser={props.connectedUser} />
-      <Menu vertical>
-        <MenuItem>
-          <Link to={`/groups/${localStorage.getItem("connectedUser")}`}>Home</Link>
-        </MenuItem>
+      <Menu vertical style={{ border: "none", boxShadow: "none" }}>
+        <Link to={`/groups/${localStorage.getItem("connectedUser")}`}>
+          <MenuItem as="a">Home</MenuItem>
+        </Link>
+
         <Dropdown text="Create New" pointing="left" className="link item">
           <DropdownMenu>
             <DropdownItem>Post</DropdownItem>
@@ -42,13 +59,13 @@ export default function SidebarMenu(props) {
           </DropdownMenu>
         </Dropdown>
 
-        <MenuItem>
-          <Link to="/settings/:idUser">Settings</Link>
-        </MenuItem>
-        <MenuItem>
-          {/* <SignoutBtn></SignoutBtn> */}
-          <Link to="/">Sign Out</Link>
-        </MenuItem>
+        <Link to={`/settings/${localStorage.getItem("connectedUser")}`}>
+          <MenuItem as="a">Settings</MenuItem>
+        </Link>
+        {/* <SignoutBtn></SignoutBtn> */}
+        <Link to="/">
+          <MenuItem as="a">Sign Out</MenuItem>
+        </Link>
       </Menu>
     </div>
   );
