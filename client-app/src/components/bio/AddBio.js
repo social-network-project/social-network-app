@@ -10,15 +10,13 @@ function AddBio({
   connectedUser,
   setConnectedUser,
 }) {
-  // const firstRender = useRef(true);
-
   const [displayName, setDisplayName] = useState("");
   const [aboutMe, setAboutMe] = useState("");
   const [bioImage, setBioImage] = useState(null);
   const [bioImgData, setBioImgData] = useState(null);
   const [currentBioId, setCurrentBioId] = useState("");
   const [bioEditOpen, setBioEditOpen] = useState(false);
-  const [bioInfo, setBioInfo] = useState(null);
+  const [bioInfo, setBioInfo] = useState([]);
 
   useEffect(() => {
     console.log("UseEffect");
@@ -51,8 +49,8 @@ function AddBio({
 
   const handleSumbit = (e) => {
     e.preventDefault();
-    bioToServer(connectedUser.id);
-    // setBioEditOpen(false);
+    bioToServer(connectedUser);
+    setBioEditOpen(false);
   };
 
   const loadBio = () => {
@@ -75,7 +73,12 @@ function AddBio({
     })
       .then((res) => res.json())
       .then((result) => {
-        setBioInfo(result);
+        // setBioInfo(result);
+        setBioInfo({
+          displayName: result.displayName,
+          bio: result.aboutMe,
+          image: result.bioImgData,
+        });
       })
       .catch((error) => {
         console.log("Error adding profile info.", error);
@@ -89,10 +92,13 @@ function AddBio({
           <Button onClick={() => editBio()}>
             <Icon name="pen square" />
           </Button>
-          <Image size="small" src={connectedUser.userImage} />
+          <Image size="small" rounded centered src={bioImgData} />
           <Card.Content>
-            <Card.Header>{connectedUser.displayName}</Card.Header>
-            <Card.Description>{connectedUser.aboutMe}</Card.Description>
+            <Card.Header>
+              <Icon name="user" />
+              {displayName}
+            </Card.Header>
+            <Card.Description>{aboutMe}</Card.Description>
           </Card.Content>
         </Card>
       )}
