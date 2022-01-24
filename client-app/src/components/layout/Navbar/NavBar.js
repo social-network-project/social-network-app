@@ -1,4 +1,3 @@
-// import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import ToggleBtn from "./ToggleBtn";
 import SidebarMenu from "./SidebarMenu";
@@ -22,15 +21,22 @@ export default function NavBar({ connectedUser }) {
 
   let isOpen;
   if (sidebar) {
-    isOpen = <SidebarMenu close={sidebarCloseHandler} sidebar={"sidebar"} connectedUser={connectedUser} />;
+    isOpen = (
+      <SidebarMenu
+        close={sidebarCloseHandler}
+        sidebar={"sidebar"}
+        connectedUser={connectedUser}
+      />
+    );
   }
+
   return (
     <>
       <Menu>
         <ToggleBtn click={openHandler} />
         <HeaderLogo />
-        {isOpen}
       </Menu>
+      {isOpen}
     </>
   );
 }

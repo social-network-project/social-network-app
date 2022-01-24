@@ -1,5 +1,5 @@
-import { Container, Card, Image, Icon } from "semantic-ui-react";
-import { useEffect, useState } from "react";
+import { Container } from "semantic-ui-react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import GroupFeedHeader from "./GroupFeedHeader";
 import GroupFeedNew from "./GroupFeedNew";

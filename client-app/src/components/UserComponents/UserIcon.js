@@ -8,20 +8,33 @@ export default function UserIcon({ connectedUser }) {
   return (
     <>
       {connectedUser && (
-        <Item>
+        <Item className="usericon">
           <Image
             size="tiny"
             as="a"
             target="_blank"
             className="circular"
-            style={{ margin: "0 0.4rem 0 0.4rem" }}
             src={connectedUser.userImage}
+            style={{
+              width: "90px",
+              heigth: "90px",
+              borderRadius: "50%",
+              margin: "2px 2px 4px 2px",
+            }}
           ></Image>
-          <div>
-            <p>Welcome, <strong>{capitalizeFirstLetter(connectedUser.displayName)}</strong></p>
+          <div className="usericon__txt">
             <p>
-              <Link to={`/profile/${connectedUser.id}`}>Go to Profile</Link>
+              Welcome,{" "}
+              <strong>
+                {capitalizeFirstLetter(connectedUser.displayName)}
+              </strong>
             </p>
+
+            <Link to={`/profile/${connectedUser.id}`}>
+              <Item as="a" className="links">
+                Go to Profile
+              </Item>
+            </Link>
           </div>
         </Item>
       )}
