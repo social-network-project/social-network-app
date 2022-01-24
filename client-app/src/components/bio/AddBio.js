@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Button,
-  Container,
-  Card,
-  Icon,
-  Image,
-  Segment,
-} from "semantic-ui-react";
+// import { v4 as uuidv4 } from "uuid";
+import { Button, Container, Card, Icon, Segment, Image } from "semantic-ui-react";
 import BioForm from "./BioForm";
 
 function AddBio({ connectedUser, setConnectedUser }) {
@@ -61,18 +55,19 @@ function AddBio({ connectedUser, setConnectedUser }) {
   };
 
   const loadBio = () => {
-    if (connectedUser !== params.idUser) {
-      fetch(`/users/${connectedUser}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setBioInfo(data);
-        })
-        .catch((error) => console.log("Error fetching profile", error));
-    } else setBioInfo(connectedUser);
+    if (connectedUser.id !== params.idUser){
+      fetch(`/users/${connectedUser.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setBioInfo(data);
+      })
+      .catch((error) => console.log("Error fetching profile", error));
+    }
+    else setBioInfo(connectedUser);
   };
 
   const bioToServer = () => {
-    fetch(`/users/${connectedUser}`, {
+      fetch(`/users/${connectedUser.id}`, {
       method: "PUT",
       body: JSON.stringify({
         userImage: bioImgData,
